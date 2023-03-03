@@ -1,0 +1,83 @@
+# This script was written by Alaina Pearce in February 2023
+# to set up tables for the a paper examining meal microstructure
+# across portion size meals
+#
+#     Copyright (C) 2023 Alaina L Pearce
+#
+#     This program is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+############ Basic Data Load/Setup ############
+# need to uncomment if running independently - not needed if compiling with 2022-01-27_PSU_CBBCsem.Rmd
+
+# library(haven)
+# library(feisr)
+# library(lme4)
+# library(lavaan)
+# library(emmeans)
+# library(gtsummary)
+# theme_gtsummary_compact()
+#
+# source('functions.R')
+
+# source('setup_data.R')
+
+## demo table
+micro_demo_data <- r01_micro_ps[c(5:6, 8, 9:13)]
+demo_tab <-
+  tbl_summary(
+    data = micro_demo_data,
+    value = list(sex ~ "Sex", age_yr ~ "Age, yr",  bmi_percentile ~ "BMI %tile", ethnicity ~ "Ethnicity", race ~ "Race", income ~ "Income",  mom_ed ~ "Mother's Education", dad_ed ~ "Father's Education"),
+    label = list(sex ~ "Sex", age_yr ~ "Age, yr",  bmi_percentile ~ "BMI %tile", ethnicity ~ "Ethnicity", race ~ "Race", income ~ "Income",  mom_ed ~ "Mother's Education", dad_ed ~ "Father's Education"),
+    type = list(sex ~ "categorical", age_yr ~ "continuous", bmi_percentile ~ "continuous", ethnicity ~ "categorical", race ~ "categorical", income ~ "categorical", mom_ed ~ "categorical", dad_ed ~ "categorical"),
+    statistic = all_continuous() ~ c("{mean} ({sd})"),
+    missing = "ifany",
+    digits = all_continuous() ~ 1)
+
+## intake table
+micro_intake_data <- r01_micro[c(2, 28, 33, 30:31, 34)]
+intake_tab <-
+  tbl_summary(
+    data = micro_intake_data,
+    by = ps,
+    value = list(freddy_pre_meal ~ "Pre-Meal Fullness", avg_vas ~ "Avg. Liking",  total_g ~ "Intake, g", total_kcal ~ "Intake, kcal", ps_plate_cleaner ~ "95% consumed"),
+    label = list(freddy_pre_meal ~ "Pre-Meal Fullness", avg_vas ~ "Avg. Liking",  total_g ~ "Intake, g", total_kcal ~ "Intake, kcal", ps_plate_cleaner ~ "95% consumed"),
+    type = list(freddy_pre_meal ~ "continuous", avg_vas ~ "continuous",  total_g ~ "continuous", total_kcal ~ "continuous", ps_plate_cleaner ~ "categorical"),
+    statistic = all_continuous() ~ c("{mean} ({sd})"),
+    missing = "ifany",
+    digits = all_continuous() ~ 1)
+
+## microstructure tables - summary
+micro_beh_data <- r01_micro[c(2, 38:41, 43:47, 50:56)]
+micro_beh_tab <-
+  tbl_summary(
+    data = micro_beh_data,
+    by = ps,
+    value = list(nbites_c1 ~ 'bites', nsips_c1 ~ 'sips', total_active_eating_c1 ~ 'active eating, min', bite_latency_c1 ~ '1st bite latency, min', meal_duration_c1 ~ 'meal duration, min' , bite_rate_c1 ~ 'bites/min', bite_rate_active_c1 ~ 'bite/min (active)', sip_rate_c1 ~ 'sips/min', sip_rate_active_c1 ~ 'sips/min (active)', bite_size_g_c1 ~ 'g/bite', bite_size_kcal_c1 ~ 'kcal/bite', eat_rate_g_c1 ~ 'g/min', eat_rate_kcal_c1 ~ 'kcal/min', eat_rate_active_g_c1 ~ 'g/min (active)', eat_rate_active_kcal_c1 ~ 'kcal/min (active)', prop_active_c1 ~ 'active eat/meal duration, min'),
+    label = list(nbites_c1 ~ 'bites', nsips_c1 ~ 'sips', total_active_eating_c1 ~ 'active eating, min', bite_latency_c1 ~ '1st bite latency, min', meal_duration_c1 ~ 'meal duration, min' , bite_rate_c1 ~ 'bites/min', bite_rate_active_c1 ~ 'bite/min (active)', sip_rate_c1 ~ 'sips/min', sip_rate_active_c1 ~ 'sips/min (active)', bite_size_g_c1 ~ 'g/bite', bite_size_kcal_c1 ~ 'kcal/bite', eat_rate_g_c1 ~ 'g/min', eat_rate_kcal_c1 ~ 'kcal/min', eat_rate_active_g_c1 ~ 'g/min (active)', eat_rate_active_kcal_c1 ~ 'kcal/min (active)', prop_active_c1 ~ 'active eat/meal duration, min'),
+    type = list(nbites_c1 ~ 'continuous', nsips_c1 ~ 'continuous', total_active_eating_c1 ~ 'continuous', bite_latency_c1 ~ 'continuous', meal_duration_c1 ~ 'continuous' , bite_rate_c1 ~ 'continuous', bite_rate_active_c1 ~ 'continuous', sip_rate_c1 ~ 'continuous', sip_rate_active_c1 ~ 'continuous', bite_size_g_c1 ~ 'continuous', bite_size_kcal_c1 ~ 'continuous', eat_rate_g_c1 ~ 'continuous', eat_rate_kcal_c1 ~ 'continuous', eat_rate_active_g_c1 ~ 'continuous', eat_rate_active_kcal_c1 ~ 'continuous', prop_active_c1 ~ 'continuous'),
+    statistic = all_continuous() ~ c("{mean} ({sd})"),
+    #missing = "no",
+    digits = all_continuous() ~ 1)
+
+## ICC - reliability ####
+icc_table <- as.data.frame(matrix(c('bites', 'sips', 'active eating', 'bite latency', 'meal duration', round(nbites_icc$value, 3), round(nsips_icc$value, 3), round(active_eat_icc$value, 3), round(bite_latency_icc$value, 3), round(meal_dur_icc$value, 3), round(nbites_icc_ps1$value, 3), round(nsips_icc_ps1$value, 3), round(active_eat_icc_ps1$value, 3), round(bite_latency_icc_ps1$value, 3), round(meal_dur_icc_ps1$value, 3), round(nbites_icc_ps2$value, 3), round(nsips_icc_ps2$value, 3), round(active_eat_icc_ps2$value, 3), round(bite_latency_icc_ps2$value, 3), round(meal_dur_icc_ps2$value, 3), round(nbites_icc_ps3$value, 3), round(nsips_icc_ps3$value, 3), round(active_eat_icc_ps3$value, 3), round(bite_latency_icc_ps3$value, 3), round(meal_dur_icc_ps3$value, 3), round(nbites_icc_ps4$value, 3), round(nsips_icc_ps4$value, 3), round(active_eat_icc_ps4$value, 3), round(bite_latency_icc_ps4$value, 3), round(meal_dur_icc_ps4$value, 3)), nrow = 5, byrow = FALSE))
+names(icc_table) <- c('Behavior', 'Overall', 'Portion 1', 'Portion 2', 'Portion 3', 'Portion 4')
+
+## Standardized Betas - Replication ####
+
+rep_ob_intake_table <- as.data.frame(matrix(c('fulness', 'sex (ref = male)', 'age, yr', 'avg liking', 'bites', 'sips', 'bite size', 'active eat/meal, min', 'meal duration, min', 'eating rate', round(ps1_g_cov_stdmod$coefficients[2:11], 3), round(ps1_kcal_cov_stdmod$coefficients[2:11], 3), round(ps2_g_cov_stdmod$coefficients[2:11], 3), round(ps2_kcal_cov_stdmod$coefficients[2:11], 3), round(ps3_g_cov_stdmod$coefficients[2:11], 3), round(ps3_kcal_cov_stdmod$coefficients[2:11], 3), round(ps3_g_cov_stdmod$coefficients[2:11], 3), round(ps4_kcal_cov_stdmod$coefficients[2:11], 3)), nrow = 10, byrow = FALSE))
+names(rep_ob_intake_table) <- c('Behavior', 'PS 1, g', 'PS 1, kcal', 'PS 2, g', 'PS 2, kcal', 'PS 3, g', 'PS 3, kcal', 'PS 4, g', 'PS 4, kcal')
+
+rep_ob_bmi_table <- as.data.frame(matrix(c('fulness', 'sex (ref = male)', 'age, yr', 'avg liking', 'bites', 'sips', 'bite size', 'active eat/meal, min', 'meal duration, min', 'eating rate', round(ps1_bmi_g_cov_stdmod$coefficients[2:11], 3), round(ps1_bmi_kcal_cov_stdmod$coefficients[2:11], 3), round(ps2_bmi_g_cov_stdmod$coefficients[2:11], 3), round(ps2_bmi_kcal_cov_stdmod$coefficients[2:11], 3), round(ps3_bmi_g_cov_stdmod$coefficients[2:11], 3), round(ps3_bmi_kcal_cov_stdmod$coefficients[2:11], 3), round(ps4_bmi_g_cov_stdmod$coefficients[2:11], 3), round(ps4_bmi_kcal_cov_stdmod$coefficients[2:11], 3)), nrow = 10, byrow = FALSE))
+names(rep_ob_bmi_table) <- c('Behavior', 'PS 1, g', 'PS 1, kcal', 'PS 2, g', 'PS 2, kcal', 'PS 3, g', 'PS 3, kcal', 'PS 4, g', 'PS 4, kcal')
