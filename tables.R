@@ -33,13 +33,13 @@
 # source('setup_data.R')
 
 ## demo table
-micro_demo_data <- r01_micro_ps[c(5:6, 8, 9:13)]
+micro_demo_data <- r01_micro_ps[c(5:6, 8, 14:15, 9:13)]
 demo_tab <-
   tbl_summary(
     data = micro_demo_data,
-    value = list(sex ~ "Sex", age_yr ~ "Age, yr",  bmi_percentile ~ "BMI %tile", ethnicity ~ "Ethnicity", race ~ "Race", income ~ "Income",  mom_ed ~ "Mother's Education", dad_ed ~ "Father's Education"),
-    label = list(sex ~ "Sex", age_yr ~ "Age, yr",  bmi_percentile ~ "BMI %tile", ethnicity ~ "Ethnicity", race ~ "Race", income ~ "Income",  mom_ed ~ "Mother's Education", dad_ed ~ "Father's Education"),
-    type = list(sex ~ "categorical", age_yr ~ "continuous", bmi_percentile ~ "continuous", ethnicity ~ "categorical", race ~ "categorical", income ~ "categorical", mom_ed ~ "categorical", dad_ed ~ "categorical"),
+    value = list(sex ~ "Sex", age_yr ~ "Age, yr",  bmi_percentile ~ "BMI %tile", dxa_total_body_perc_fat ~ "%Body Fat", fmi ~ 'Fat Mass Index', ethnicity ~ "Ethnicity", race ~ "Race", income ~ "Income",  mom_ed ~ "Mother's Education", dad_ed ~ "Father's Education"),
+    label = list(sex ~ "Sex", age_yr ~ "Age, yr",  bmi_percentile ~ "BMI %tile", dxa_total_body_perc_fat ~ "%Body Fat", fmi ~ 'Fat Mass Index', ethnicity ~ "Ethnicity", race ~ "Race", income ~ "Income",  mom_ed ~ "Mother's Education", dad_ed ~ "Father's Education"),
+    type = list(sex ~ "categorical", age_yr ~ "continuous", bmi_percentile ~ "continuous", dxa_total_body_perc_fat ~ "continuous", fmi ~ 'continuous', ethnicity ~ "categorical", race ~ "categorical", income ~ "categorical", mom_ed ~ "categorical", dad_ed ~ "categorical"),
     statistic = all_continuous() ~ c("{mean} ({sd})"),
     missing = "ifany",
     digits = all_continuous() ~ 1)
@@ -68,16 +68,8 @@ micro_beh_tab <-
     type = list(nbites_c1 ~ 'continuous', nsips_c1 ~ 'continuous', total_active_eating_c1 ~ 'continuous', bite_latency_c1 ~ 'continuous', meal_duration_c1 ~ 'continuous' , bite_rate_c1 ~ 'continuous', bite_rate_active_c1 ~ 'continuous', sip_rate_c1 ~ 'continuous', sip_rate_active_c1 ~ 'continuous', bite_size_g_c1 ~ 'continuous', bite_size_kcal_c1 ~ 'continuous', eat_rate_g_c1 ~ 'continuous', eat_rate_kcal_c1 ~ 'continuous', eat_rate_active_g_c1 ~ 'continuous', eat_rate_active_kcal_c1 ~ 'continuous', prop_active_c1 ~ 'continuous'),
     statistic = all_continuous() ~ c("{mean} ({sd})"),
     #missing = "no",
-    digits = all_continuous() ~ 1)
+    digits = all_continuous() ~ 3)
 
 ## ICC - reliability ####
 icc_table <- as.data.frame(matrix(c('bites', 'sips', 'active eating', 'bite latency', 'meal duration', round(nbites_icc$value, 3), round(nsips_icc$value, 3), round(active_eat_icc$value, 3), round(bite_latency_icc$value, 3), round(meal_dur_icc$value, 3), round(nbites_icc_ps1$value, 3), round(nsips_icc_ps1$value, 3), round(active_eat_icc_ps1$value, 3), round(bite_latency_icc_ps1$value, 3), round(meal_dur_icc_ps1$value, 3), round(nbites_icc_ps2$value, 3), round(nsips_icc_ps2$value, 3), round(active_eat_icc_ps2$value, 3), round(bite_latency_icc_ps2$value, 3), round(meal_dur_icc_ps2$value, 3), round(nbites_icc_ps3$value, 3), round(nsips_icc_ps3$value, 3), round(active_eat_icc_ps3$value, 3), round(bite_latency_icc_ps3$value, 3), round(meal_dur_icc_ps3$value, 3), round(nbites_icc_ps4$value, 3), round(nsips_icc_ps4$value, 3), round(active_eat_icc_ps4$value, 3), round(bite_latency_icc_ps4$value, 3), round(meal_dur_icc_ps4$value, 3)), nrow = 5, byrow = FALSE))
 names(icc_table) <- c('Behavior', 'Overall', 'Portion 1', 'Portion 2', 'Portion 3', 'Portion 4')
-
-## Standardized Betas - Replication ####
-
-rep_ob_intake_table <- as.data.frame(matrix(c('fulness', 'sex (ref = male)', 'age, yr', 'avg liking', 'bites', 'sips', 'bite size', 'active eat/meal, min', 'meal duration, min', 'eating rate', round(ps1_g_cov_stdmod$coefficients[2:11], 3), round(ps1_kcal_cov_stdmod$coefficients[2:11], 3), round(ps2_g_cov_stdmod$coefficients[2:11], 3), round(ps2_kcal_cov_stdmod$coefficients[2:11], 3), round(ps3_g_cov_stdmod$coefficients[2:11], 3), round(ps3_kcal_cov_stdmod$coefficients[2:11], 3), round(ps3_g_cov_stdmod$coefficients[2:11], 3), round(ps4_kcal_cov_stdmod$coefficients[2:11], 3)), nrow = 10, byrow = FALSE))
-names(rep_ob_intake_table) <- c('Behavior', 'PS 1, g', 'PS 1, kcal', 'PS 2, g', 'PS 2, kcal', 'PS 3, g', 'PS 3, kcal', 'PS 4, g', 'PS 4, kcal')
-
-rep_ob_bmi_table <- as.data.frame(matrix(c('fulness', 'sex (ref = male)', 'age, yr', 'avg liking', 'bites', 'sips', 'bite size', 'active eat/meal, min', 'meal duration, min', 'eating rate', round(ps1_bmi_g_cov_stdmod$coefficients[2:11], 3), round(ps1_bmi_kcal_cov_stdmod$coefficients[2:11], 3), round(ps2_bmi_g_cov_stdmod$coefficients[2:11], 3), round(ps2_bmi_kcal_cov_stdmod$coefficients[2:11], 3), round(ps3_bmi_g_cov_stdmod$coefficients[2:11], 3), round(ps3_bmi_kcal_cov_stdmod$coefficients[2:11], 3), round(ps4_bmi_g_cov_stdmod$coefficients[2:11], 3), round(ps4_bmi_kcal_cov_stdmod$coefficients[2:11], 3)), nrow = 10, byrow = FALSE))
-names(rep_ob_bmi_table) <- c('Behavior', 'PS 1, g', 'PS 1, kcal', 'PS 2, g', 'PS 2, kcal', 'PS 3, g', 'PS 3, kcal', 'PS 4, g', 'PS 4, kcal')

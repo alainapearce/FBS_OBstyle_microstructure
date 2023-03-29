@@ -31,6 +31,11 @@
 
 # demographics check ####
 
+#respondant
+nmom <- nrow(r01_micro_ps[r01_micro_ps[['parent_respondent']] == 0, ])
+pmom <- nmom/nrow(r01_micro_ps)
+
+#
 
 #### Coding Reliability ####
 
@@ -90,47 +95,6 @@ ps3_cormat <- cor.matrix(ps3_corvars, ps_var_names)
 ps4_corvars <- r01_micro[r01_micro[['ps']] == 4, micro_var_names]
 ps4_cormat <- cor.matrix(ps4_corvars, ps_var_names)
 
-## Analysis of distance matrices - adonis ####
-## decompose the changes in person-to-person eating characteristics between meals based on meal characteristics
-
-portion.beh <- r01_micro[!(r01_micro[['ps']] == 4 & r01_micro[['sub']] == 128) & !(r01_micro[['ps']] == 2 & r01_micro[['sub']] == 83), micro_var_names]
-
-adonis_dat <- r01_micro[!(r01_micro[['ps']] == 4 & r01_micro[['sub']] == 128) & !(r01_micro[['ps']] == 2 & r01_micro[['sub']] == 83), ]
-
-sub_ids <- r01_micro[!(r01_micro[['ps']] == 4 & r01_micro[['sub']] == 128) & !(r01_micro[['ps']] == 2 & r01_micro[['sub']] == 83), 'sub']
-
-ps_group <- as.factor(r01_micro[!(r01_micro[['ps']] == 4 & r01_micro[['sub']] == 128) & !(r01_micro[['ps']] == 2 & r01_micro[['sub']] == 83), 'ps'])
-
-## check dispersion
-all_beh_disp <- betadisper(dist(scale(portion.beh), method = 'euclidean'), group = as.factor(adonis_dat$ps))
-
-## run adonis model
-all_beh_psmod <- adonis2(scale(portion.beh) ~ ps, data = adonis_dat, strata = sub_ids, method="euclidean", permutations=999)
-
-all_beh_vmod <- adonis2(scale(portion.beh) ~ visit, data = adonis_dat, strata = sub_ids, method="euclidean", permutations=999)
-
-# post-hoc tests
-all_beh_ps_pairs <- pairwise.adonis2(scale(portion.beh) ~ ps, data = adonis_dat, strata = 'sub', method='euclidean', p.adjust.m = 'fdr')
-
-## Exploratory models by behavior ####
-nbites_mod <- lmer(nbites_c1~avg_vas + freddy_pre_meal + ps_order + ps + (1|sub), data = r01_micro)
-nsips_mod <- lmer(nsips_c1~avg_vas + freddy_pre_meal + ps_order + ps + (1|sub), data = r01_micro)
-active_eat_mod <- lmer(total_active_eating_c1~avg_vas + freddy_pre_meal + ps_order + ps + (1|sub), data = r01_micro)
-meal_dur_mod <- lmer(meal_duration_c1~avg_vas + freddy_pre_meal + ps_order + ps + (1|sub), data = r01_micro)
-bite_latency_mod <- lmer(bite_latency_c1~avg_vas + freddy_pre_meal + ps_order + ps + (1|sub), data = r01_micro)
-bite_rate_mod <- lmer(bite_rate_c1~avg_vas + freddy_pre_meal + ps_order + ps + (1|sub), data = r01_micro)
-bite_rate_active_mod <- lmer(bite_rate_active_c1~avg_vas + freddy_pre_meal + ps_order + ps + (1|sub), data = r01_micro)
-sip_rate_mod <- lmer(sip_rate_c1~avg_vas + freddy_pre_meal + ps_order + ps + (1|sub), data = r01_micro)
-sip_rate_active_mod <- lmer(sip_rate_active_c1~avg_vas + freddy_pre_meal + ps_order + ps + (1|sub), data = r01_micro)
-bite_size_g_mod <- lmer(bite_size_g_c1~avg_vas + freddy_pre_meal + ps_order + ps + (1|sub), data = r01_micro)
-bite_size_kcal_mod <- lmer(bite_size_g_c1~avg_vas + freddy_pre_meal + ps_order + ps + (1|sub), data = r01_micro)
-eat_rate_g_mod <- lmer(eat_rate_g_c1~avg_vas + freddy_pre_meal + ps_order + ps + (1|sub), data = r01_micro)
-eat_rate_kcal_mod <- lmer(eat_rate_kcal_c1~avg_vas + freddy_pre_meal + ps_order + ps + (1|sub), data = r01_micro)
-eat_rate_active_g_mod <- lmer(eat_rate_active_g_c1~avg_vas + freddy_pre_meal + ps_order + ps + (1|sub), data = r01_micro)
-eat_rate_active_kcal_mod <- lmer(eat_rate_active_kcal_c1~avg_vas + freddy_pre_meal + ps_order + ps + (1|sub), data = r01_micro)
-prop_active_mod <- lmer(prop_active_c1~avg_vas + freddy_pre_meal + ps_order + ps + (1|sub), data = r01_micro)
-
-
 ## Across Portion ICC ####
 icc_vars <- gsub('_c1', '', micro_var_names)
 icc_vars <- gsub('total_', '', icc_vars)
@@ -146,134 +110,331 @@ boot_mat <- rmcorr.matrix(varnames_rmcorr, 'sub', r01_micro[!(r01_micro[['ps']] 
 ## Replicate 'Obesogenic' patterns of eating ####
 
 ## portion 1  - intake ####
-ps1_kcal_mod <- lm(ps1_total_kcal ~ ps1_nbites + ps1_nsips + ps1_bite_size_kcal + ps1_prop_active + ps1_meal_duration + ps1_eat_rate_kcal, data = r01_micro_ps)
-
-ps1_kcal_cov_mod <- lm(ps1_total_kcal ~ ps1_freddy_pre_meal + sex + age_yr + ps1_avg_vas + ps1_nbites + ps1_nsips + ps1_bite_size_kcal + ps1_prop_active + ps1_meal_duration + ps1_eat_rate_kcal, data = r01_micro_ps)
-
-ps1_g_mod <- lm(ps1_total_g ~ ps1_nbites + ps1_nsips + ps1_bite_size_g + ps1_prop_active + ps1_meal_duration + ps1_eat_rate_g, data = r01_micro_ps)
-
-ps1_g_cov_mod <- lm(ps1_total_g ~ ps1_freddy_pre_meal + sex + age_yr + ps1_avg_vas + ps1_nbites + ps1_nsips + ps1_bite_size_g + ps1_prop_active + ps1_meal_duration + ps1_eat_rate_g, data = r01_micro_ps)
-
-ps1_g_stdmod <- lm(scale(ps1_total_g) ~ scale(ps1_nbites) + scale(ps1_nsips) + scale(ps1_bite_size_g) + scale(ps1_prop_active) + scale(ps1_meal_duration) + scale(ps1_eat_rate_g), data = r01_micro_ps)
+r01_micro_ps$sex_num <- ifelse(r01_micro_ps$sex == 'Male', 0, 1)
 
 ps1_g_cov_stdmod <- lm(scale(ps1_total_g) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(ps1_nbites) + scale(ps1_nsips) + scale(ps1_bite_size_g) + scale(ps1_prop_active) + scale(ps1_meal_duration) + scale(ps1_eat_rate_g), data = r01_micro_ps)
 
-ps1_kcal_stdmod <- lm(scale(ps1_total_kcal) ~ scale(ps1_nbites) + scale(ps1_nsips) + scale(ps1_bite_size_kcal) + scale(ps1_prop_active) + scale(ps1_meal_duration) + scale(ps1_eat_rate_kcal), data = r01_micro_ps)
+ps1_g_rwa <- rwa(df = r01_micro_ps, outcome = 'ps1_total_g', predictors = c('ps1_freddy_pre_meal', 'sex_num', 'age_yr', 'ps1_avg_vas', 'ps1_nbites', 'ps1_nsips', 'ps1_bite_size_g', 'ps1_prop_active', 'ps1_meal_duration', 'ps1_eat_rate_g'))
 
 ps1_kcal_cov_stdmod <- lm(scale(ps1_total_kcal) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(ps1_nbites) + scale(ps1_nsips) + scale(ps1_bite_size_kcal) + scale(ps1_prop_active) + scale(ps1_meal_duration) + scale(ps1_eat_rate_kcal), data = r01_micro_ps)
 
+ps1_kcal_rwa <- rwa(df = r01_micro_ps, outcome = 'ps1_total_kcal', predictors = c('ps1_freddy_pre_meal', 'sex_num', 'age_yr', 'ps1_avg_vas', 'ps1_nbites', 'ps1_nsips', 'ps1_bite_size_kcal', 'ps1_prop_active', 'ps1_meal_duration', 'ps1_eat_rate_kcal'))
+
+
 ## portion 2  - intake ####
-ps2_kcal_mod <- lm(ps2_total_kcal ~ ps2_nbites + ps2_nsips + ps2_bite_size_kcal + ps2_prop_active + ps2_meal_duration + ps2_eat_rate_kcal, data = r01_micro_ps)
-
-ps2_kcal_cov_mod <- lm(ps2_total_kcal ~ ps2_freddy_pre_meal + sex + age_yr + ps2_avg_vas + ps2_nbites + ps2_nsips + ps2_bite_size_kcal + ps2_prop_active + ps2_meal_duration + ps2_eat_rate_kcal, data = r01_micro_ps)
-
-ps2_g_mod <- lm(ps2_total_g ~ ps2_nbites + ps2_nsips + ps2_bite_size_g + ps2_prop_active + ps2_meal_duration + ps2_eat_rate_g, data = r01_micro_ps)
-
-ps2_g_cov_mod <- lm(ps2_total_g ~ ps2_freddy_pre_meal + sex + age_yr + ps2_avg_vas + ps2_nbites + ps2_nsips + ps2_bite_size_g + ps2_prop_active + ps2_meal_duration + ps2_eat_rate_g, data = r01_micro_ps)
 
 ps2_g_cov_stdmod <- lm(scale(ps2_total_g) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(ps2_nbites) + scale(ps2_nsips) + scale(ps2_bite_size_g) + scale(ps2_prop_active) + scale(ps2_meal_duration) + scale(ps2_eat_rate_g), data = r01_micro_ps)
 
-ps2_kcal_stdmod <- lm(scale(ps2_total_kcal) ~ scale(ps2_nbites) + scale(ps2_nsips) + scale(ps2_bite_size_kcal) + scale(ps2_prop_active) + scale(ps2_meal_duration) + scale(ps2_eat_rate_kcal), data = r01_micro_ps)
+ps2_g_rwa <- rwa(df = r01_micro_ps, outcome = 'ps2_total_g', predictors = c('ps2_freddy_pre_meal', 'sex_num', 'age_yr', 'ps2_avg_vas', 'ps2_nbites', 'ps2_nsips', 'ps2_bite_size_g', 'ps2_prop_active', 'ps2_meal_duration', 'ps2_eat_rate_g'))
 
 ps2_kcal_cov_stdmod <- lm(scale(ps2_total_kcal) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(ps2_nbites) + scale(ps2_nsips) + scale(ps2_bite_size_kcal) + scale(ps2_prop_active) + scale(ps2_meal_duration) + scale(ps2_eat_rate_kcal), data = r01_micro_ps)
 
+ps2_kcal_rwa <- rwa(df = r01_micro_ps, outcome = 'ps2_total_kcal', predictors = c('ps2_freddy_pre_meal', 'sex_num', 'age_yr', 'ps2_avg_vas', 'ps2_nbites', 'ps2_nsips', 'ps2_bite_size_kcal', 'ps2_prop_active', 'ps2_meal_duration', 'ps2_eat_rate_kcal'))
+
 ## portion 3  - intake ####
-ps3_kcal_mod <- lm(ps3_total_kcal ~ ps3_nbites + ps3_nsips + ps3_bite_size_kcal + ps3_prop_active + ps3_meal_duration + ps3_eat_rate_kcal, data = r01_micro_ps)
-
-ps3_kcal_cov_mod <- lm(ps3_total_kcal ~ ps3_freddy_pre_meal + sex + age_yr + ps3_avg_vas + ps3_nbites + ps3_nsips + ps3_bite_size_kcal + ps3_prop_active + ps3_meal_duration + ps3_eat_rate_kcal, data = r01_micro_ps)
-
-ps3_g_mod <- lm(ps3_total_g ~ ps3_nbites + ps3_nsips + ps3_bite_size_g + ps3_prop_active + ps3_meal_duration + ps3_eat_rate_g, data = r01_micro_ps)
-
-ps3_g_cov_mod <- lm(ps3_total_g ~ ps3_freddy_pre_meal + sex + age_yr + ps3_avg_vas + ps3_nbites + ps3_nsips + ps3_bite_size_g + ps3_prop_active + ps3_meal_duration + ps3_eat_rate_g, data = r01_micro_ps)
 
 ps3_g_cov_stdmod <- lm(scale(ps3_total_g) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(ps3_nbites) + scale(ps3_nsips) + scale(ps3_bite_size_g) + scale(ps3_prop_active) + scale(ps3_meal_duration) + scale(ps3_eat_rate_g), data = r01_micro_ps)
 
-ps3_kcal_stdmod <- lm(scale(ps3_total_kcal) ~ scale(ps3_nbites) + scale(ps3_nsips) + scale(ps3_bite_size_kcal) + scale(ps3_prop_active) + scale(ps3_meal_duration) + scale(ps3_eat_rate_kcal), data = r01_micro_ps)
+ps3_g_rwa <- rwa(df = r01_micro_ps, outcome = 'ps3_total_g', predictors = c('ps3_freddy_pre_meal', 'sex_num', 'age_yr', 'ps3_avg_vas', 'ps3_nbites', 'ps3_nsips', 'ps3_bite_size_g', 'ps3_prop_active', 'ps3_meal_duration', 'ps3_eat_rate_g'))
 
 ps3_kcal_cov_stdmod <- lm(scale(ps3_total_kcal) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(ps3_nbites) + scale(ps3_nsips) + scale(ps3_bite_size_kcal) + scale(ps3_prop_active) + scale(ps3_meal_duration) + scale(ps3_eat_rate_kcal), data = r01_micro_ps)
 
+ps3_kcal_rwa <- rwa(df = r01_micro_ps, outcome = 'ps3_total_kcal', predictors = c('ps3_freddy_pre_meal', 'sex_num', 'age_yr', 'ps3_avg_vas', 'ps3_nbites', 'ps3_nsips', 'ps3_bite_size_kcal', 'ps3_prop_active', 'ps3_meal_duration', 'ps3_eat_rate_kcal'))
+
 ## portion 4  - intake ####
-ps4_kcal_mod <- lm(ps4_total_kcal ~ ps4_nbites + ps4_nsips + ps4_bite_size_kcal + ps4_prop_active + ps4_meal_duration + ps4_eat_rate_kcal, data = r01_micro_ps)
-
-ps4_kcal_cov_mod <- lm(ps4_total_kcal ~ ps4_freddy_pre_meal + sex + age_yr + ps4_avg_vas + ps4_nbites + ps4_nsips + ps4_bite_size_kcal + ps4_prop_active + ps4_meal_duration + ps4_eat_rate_kcal, data = r01_micro_ps)
-
-ps4_g_mod <- lm(ps4_total_g ~ ps4_nbites + ps4_nsips + ps4_bite_size_g + ps4_prop_active + ps4_meal_duration + ps4_eat_rate_g, data = r01_micro_ps)
-
-ps4_g_cov_mod <- lm(ps4_total_g ~ ps4_freddy_pre_meal + sex + age_yr + ps4_avg_vas + ps4_nbites + ps4_nsips + ps4_bite_size_g + ps4_prop_active + ps4_meal_duration + ps4_eat_rate_g, data = r01_micro_ps)
 
 ps4_g_cov_stdmod <- lm(scale(ps4_total_g) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(ps4_nbites) + scale(ps4_nsips) + scale(ps4_bite_size_g) + scale(ps4_prop_active) + scale(ps4_meal_duration) + scale(ps4_eat_rate_g), data = r01_micro_ps)
 
-ps4_kcal_stdmod <- lm(scale(ps4_total_kcal) ~ scale(ps4_nbites) + scale(ps4_nsips) + scale(ps4_bite_size_kcal) + scale(ps4_prop_active) + scale(ps4_meal_duration) + scale(ps4_eat_rate_kcal), data = r01_micro_ps)
+ps4_g_rwa <- rwa(df = r01_micro_ps, outcome = 'ps4_total_g', predictors = c('ps4_freddy_pre_meal', 'sex_num', 'age_yr', 'ps4_avg_vas', 'ps4_nbites', 'ps4_nsips', 'ps4_bite_size_g', 'ps4_prop_active', 'ps4_meal_duration', 'ps4_meal_duration', 'ps4_eat_rate_g'))
 
 ps4_kcal_cov_stdmod <- lm(scale(ps4_total_kcal) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(ps4_nbites) + scale(ps4_nsips) + scale(ps4_bite_size_kcal) + scale(ps4_prop_active) + scale(ps4_meal_duration) + scale(ps4_eat_rate_kcal), data = r01_micro_ps)
 
-## portion 1  - intake ####
-ps1_bmi_kcal_mod <- lm(bmi_percentile ~ ps1_nbites + ps1_nsips + ps1_bite_size_kcal + ps1_prop_active + ps1_meal_duration + ps1_eat_rate_kcal, data = r01_micro_ps)
+ps4_kcal_rwa <- rwa(df = r01_micro_ps, outcome = 'ps4_total_kcal', predictors = c('ps4_freddy_pre_meal', 'sex_num', 'age_yr', 'ps4_avg_vas', 'ps4_nbites', 'ps4_nsips', 'ps4_bite_size_kcal', 'ps4_prop_active', 'ps4_meal_duration', 'ps4_meal_duration', 'ps4_eat_rate_kcal'))
 
-ps1_bmi_kcal_mod <- lm(bmi_percentile ~ ps1_freddy_pre_meal + sex + age_yr + ps1_avg_vas + ps1_nbites + ps1_nsips + ps1_bite_size_kcal + ps1_prop_active + ps1_meal_duration + ps1_eat_rate_kcal, data = r01_micro_ps)
+## portion 1  - BMI ####
 
-ps1_bmi_g_mod <- lm(bmi_percentile ~ ps1_nbites + ps1_nsips + ps1_bite_size_g + ps1_prop_active + ps1_meal_duration + ps1_eat_rate_g, data = r01_micro_ps)
+ps1_bmi_bites_cov_stdmod <- lm(scale(ps1_nbites) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps1_bmi_bites_cov_sum <- summary(ps1_bmi_bites_cov_stdmod)
 
-ps1_bmi_g_cov_mod <- lm(bmi_percentile ~ ps1_freddy_pre_meal + sex + age_yr + ps1_avg_vas + ps1_nbites + ps1_nsips + ps1_bite_size_g + ps1_prop_active + ps1_meal_duration + ps1_eat_rate_g, data = r01_micro_ps)
+ps1_bmi_sips_cov_stdmod <- lm(scale(ps1_nsips) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps1_bmi_sips_cov_sum <- summary(ps1_bmi_sips_cov_stdmod)
 
-ps1_bmi_g_stdmod <- lm(scale(bmi_percentile) ~ scale(ps1_nbites) + scale(ps1_nsips) + scale(ps1_bite_size_g) + scale(ps1_prop_active) + scale(ps1_meal_duration) + scale(ps1_eat_rate_g), data = r01_micro_ps)
-
-ps1_bmi_g_cov_stdmod <- lm(scale(bmi_percentile) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(ps1_nbites) + scale(ps1_nsips) + scale(ps1_bite_size_g) + scale(ps1_prop_active) + scale(ps1_meal_duration) + scale(ps1_eat_rate_g), data = r01_micro_ps)
-
-ps1_bmi_kcal_stdmod <- lm(scale(bmi_percentile) ~ scale(ps1_nbites) + scale(ps1_nsips) + scale(ps1_bite_size_kcal) + scale(ps1_prop_active) + scale(ps1_meal_duration) + scale(ps1_eat_rate_kcal), data = r01_micro_ps)
-
-ps1_bmi_kcal_cov_stdmod <- lm(scale(bmi_percentile) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(ps1_nbites) + scale(ps1_nsips) + scale(ps1_bite_size_kcal) + scale(ps1_prop_active) + scale(ps1_meal_duration) + scale(ps1_eat_rate_kcal), data = r01_micro_ps)
+ps1_bmi_bsize_g_cov_stdmod <- lm(scale(ps1_bite_size_g) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps1_bmi_bsize_g_cov_sum <- summary(ps1_bmi_bsize_g_cov_stdmod)
 
 
-## portion 1  - intake ####
-ps2_bmi_kcal_mod <- lm(bmi_percentile ~ ps2_nbites + ps2_nsips + ps2_bite_size_kcal + ps2_prop_active + ps2_meal_duration + ps2_eat_rate_kcal, data = r01_micro_ps)
+ps1_bmi_bsize_kcal_cov_stdmod <- lm(scale(ps1_bite_size_kcal) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps1_bmi_bsize_kcal_cov_sum <- summary(ps1_bmi_bsize_kcal_cov_stdmod)
 
-ps2_bmi_kcal_mod <- lm(bmi_percentile ~ ps2_freddy_pre_meal + sex + age_yr + ps2_avg_vas + ps2_nbites + ps2_nsips + ps2_bite_size_kcal + ps2_prop_active + ps2_meal_duration + ps2_eat_rate_kcal, data = r01_micro_ps)
-
-ps2_bmi_g_mod <- lm(bmi_percentile ~ ps2_nbites + ps2_nsips + ps2_bite_size_g + ps2_prop_active + ps2_meal_duration + ps2_eat_rate_g, data = r01_micro_ps)
-
-ps2_bmi_g_cov_mod <- lm(bmi_percentile ~ ps2_freddy_pre_meal + sex + age_yr + ps2_avg_vas + ps2_nbites + ps2_nsips + ps2_bite_size_g + ps2_prop_active + ps2_meal_duration + ps2_eat_rate_g, data = r01_micro_ps)
-
-ps2_bmi_g_stdmod <- lm(scale(bmi_percentile) ~ scale(ps2_nbites) + scale(ps2_nsips) + scale(ps2_bite_size_g) + scale(ps2_prop_active) + scale(ps2_meal_duration) + scale(ps2_eat_rate_g), data = r01_micro_ps)
-
-ps2_bmi_g_cov_stdmod <- lm(scale(bmi_percentile) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(ps2_nbites) + scale(ps2_nsips) + scale(ps2_bite_size_g) + scale(ps2_prop_active) + scale(ps2_meal_duration) + scale(ps2_eat_rate_g), data = r01_micro_ps)
-
-ps2_bmi_kcal_stdmod <- lm(scale(bmi_percentile) ~ scale(ps2_nbites) + scale(ps2_nsips) + scale(ps2_bite_size_kcal) + scale(ps2_prop_active) + scale(ps2_meal_duration) + scale(ps2_eat_rate_kcal), data = r01_micro_ps)
-
-ps2_bmi_kcal_cov_stdmod <- lm(scale(bmi_percentile) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(ps2_nbites) + scale(ps2_nsips) + scale(ps2_bite_size_kcal) + scale(ps2_prop_active) + scale(ps2_meal_duration) + scale(ps2_eat_rate_kcal), data = r01_micro_ps)
+ps1_bmi_propactive_cov_stdmod <- lm(scale(ps1_prop_active) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps1_bmi_propractive_cov_sum <- summary(ps1_bmi_propactive_cov_stdmod)
 
 
-## portion 1  - intake ####
-ps3_bmi_kcal_mod <- lm(bmi_percentile ~ ps3_nbites + ps3_nsips + ps3_bite_size_kcal + ps3_prop_active + ps3_meal_duration + ps3_eat_rate_kcal, data = r01_micro_ps)
-
-ps3_bmi_kcal_mod <- lm(bmi_percentile ~ ps3_freddy_pre_meal + sex + age_yr + ps3_avg_vas + ps3_nbites + ps3_nsips + ps3_bite_size_kcal + ps3_prop_active + ps3_meal_duration + ps3_eat_rate_kcal, data = r01_micro_ps)
-
-ps3_bmi_g_mod <- lm(bmi_percentile ~ ps3_nbites + ps3_nsips + ps3_bite_size_g + ps3_prop_active + ps3_meal_duration + ps3_eat_rate_g, data = r01_micro_ps)
-
-ps3_bmi_g_cov_mod <- lm(bmi_percentile ~ ps3_freddy_pre_meal + sex + age_yr + ps3_avg_vas + ps3_nbites + ps3_nsips + ps3_bite_size_g + ps3_prop_active + ps3_meal_duration + ps3_eat_rate_g, data = r01_micro_ps)
-
-ps3_bmi_g_stdmod <- lm(scale(bmi_percentile) ~ scale(ps3_nbites) + scale(ps3_nsips) + scale(ps3_bite_size_g) + scale(ps3_prop_active) + scale(ps3_meal_duration) + scale(ps3_eat_rate_g), data = r01_micro_ps)
-
-ps3_bmi_g_cov_stdmod <- lm(scale(bmi_percentile) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(ps3_nbites) + scale(ps3_nsips) + scale(ps3_bite_size_g) + scale(ps3_prop_active) + scale(ps3_meal_duration) + scale(ps3_eat_rate_g), data = r01_micro_ps)
-
-ps3_bmi_kcal_stdmod <- lm(scale(bmi_percentile) ~ scale(ps3_nbites) + scale(ps3_nsips) + scale(ps3_bite_size_kcal) + scale(ps3_prop_active) + scale(ps3_meal_duration) + scale(ps3_eat_rate_kcal), data = r01_micro_ps)
-
-ps3_bmi_kcal_cov_stdmod <- lm(scale(bmi_percentile) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(ps3_nbites) + scale(ps3_nsips) + scale(ps3_bite_size_kcal) + scale(ps3_prop_active) + scale(ps3_meal_duration) + scale(ps3_eat_rate_kcal), data = r01_micro_ps)
+ps1_bmi_mealdur_cov_stdmod <- lm(scale(ps1_meal_duration) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps1_bmi_mealdur_cov_sum <- summary(ps1_bmi_mealdur_cov_stdmod)
 
 
-## portion 1  - intake ####
-ps4_bmi_kcal_mod <- lm(bmi_percentile ~ ps4_nbites + ps4_nsips + ps4_bite_size_kcal + ps4_prop_active + ps4_meal_duration + ps4_eat_rate_kcal, data = r01_micro_ps)
+ps1_bmi_rate_g_cov_stdmod <- lm(scale(ps1_eat_rate_g) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps1_bmi_rate_g_cov_sum <- summary(ps1_bmi_rate_g_cov_stdmod)
 
-ps4_bmi_kcal_mod <- lm(bmi_percentile ~ ps4_freddy_pre_meal + sex + age_yr + ps4_avg_vas + ps4_nbites + ps4_nsips + ps4_bite_size_kcal + ps4_prop_active + ps4_meal_duration + ps4_eat_rate_kcal, data = r01_micro_ps)
 
-ps4_bmi_g_mod <- lm(bmi_percentile ~ ps4_nbites + ps4_nsips + ps4_bite_size_g + ps4_prop_active + ps4_meal_duration + ps4_eat_rate_g, data = r01_micro_ps)
+ps1_bmi_rate_kcal_cov_stdmod <- lm(scale(ps1_eat_rate_kcal) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps1_bmi_rate_kcal_cov_sum <- summary(ps1_bmi_rate_kcal_cov_stdmod)
 
-ps4_bmi_g_cov_mod <- lm(bmi_percentile ~ ps4_freddy_pre_meal + sex + age_yr + ps4_avg_vas + ps4_nbites + ps4_nsips + ps4_bite_size_g + ps4_prop_active + ps4_meal_duration + ps4_eat_rate_g, data = r01_micro_ps)
 
-ps4_bmi_g_stdmod <- lm(scale(bmi_percentile) ~ scale(ps4_nbites) + scale(ps4_nsips) + scale(ps4_bite_size_g) + scale(ps4_prop_active) + scale(ps4_meal_duration) + scale(ps4_eat_rate_g), data = r01_micro_ps)
+ps1_bmi_adj <- p.adjust(c(ps1_bmi_bites_cov_sum$coefficients[6, 4], ps1_bmi_sips_cov_sum$coefficients[6, 4], ps1_bmi_bsize_g_cov_sum$coefficients[6, 4], ps1_bmi_bsize_kcal_cov_sum$coefficients[6, 4], ps1_bmi_propractive_cov_sum$coefficients[6, 4], ps1_bmi_mealdur_cov_sum$coefficients[6, 4], ps1_bmi_rate_g_cov_sum$coefficients[6, 4], ps1_bmi_rate_kcal_cov_sum$coefficients[6, 4]), method = 'fdr')
 
-ps4_bmi_g_cov_stdmod <- lm(scale(bmi_percentile) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(ps4_nbites) + scale(ps4_nsips) + scale(ps4_bite_size_g) + scale(ps4_prop_active) + scale(ps4_meal_duration) + scale(ps4_eat_rate_g), data = r01_micro_ps)
+ps1_bmi_adj <- data.frame(ps1_bmi_adj)
+rownames(ps1_bmi_adj) <- c('Bites', 'Sips', 'Bite Size, g', 'Bite Size, kcal', 'Prop Active', 'Meal Duration', 'Eat Rate, g', 'Eat Rate, kcal')
 
-ps4_bmi_kcal_stdmod <- lm(scale(bmi_percentile) ~ scale(ps4_nbites) + scale(ps4_nsips) + scale(ps4_bite_size_kcal) + scale(ps4_prop_active) + scale(ps4_meal_duration) + scale(ps4_eat_rate_kcal), data = r01_micro_ps)
+## portion 2  - BMI ####
 
-ps4_bmi_kcal_cov_stdmod <- lm(scale(bmi_percentile) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(ps4_nbites) + scale(ps4_nsips) + scale(ps4_bite_size_kcal) + scale(ps4_prop_active) + scale(ps4_meal_duration) + scale(ps4_eat_rate_kcal), data = r01_micro_ps)
+ps2_bmi_bites_cov_stdmod <- lm(scale(ps2_nbites) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps2_bmi_bites_cov_sum <- summary(ps2_bmi_bites_cov_stdmod)
+
+ps2_bmi_sips_cov_stdmod <- lm(scale(ps2_nsips) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps2_bmi_sips_cov_sum <- summary(ps2_bmi_sips_cov_stdmod)
+
+ps2_bmi_bsize_g_cov_stdmod <- lm(scale(ps2_bite_size_g) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps2_bmi_bsize_g_cov_sum <- summary(ps2_bmi_bsize_g_cov_stdmod)
+
+
+ps2_bmi_bsize_kcal_cov_stdmod <- lm(scale(ps2_bite_size_kcal) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps2_bmi_bsize_kcal_cov_sum <- summary(ps2_bmi_bsize_kcal_cov_stdmod)
+
+ps2_bmi_propactive_cov_stdmod <- lm(scale(ps2_prop_active) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps2_bmi_propractive_cov_sum <- summary(ps2_bmi_propactive_cov_stdmod)
+
+
+ps2_bmi_mealdur_cov_stdmod <- lm(scale(ps2_meal_duration) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps2_bmi_mealdur_cov_sum <- summary(ps2_bmi_mealdur_cov_stdmod)
+
+
+ps2_bmi_rate_g_cov_stdmod <- lm(scale(ps2_eat_rate_g) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps2_bmi_rate_g_cov_sum <- summary(ps2_bmi_rate_g_cov_stdmod)
+
+
+ps2_bmi_rate_kcal_cov_stdmod <- lm(scale(ps2_eat_rate_kcal) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps2_bmi_rate_kcal_cov_sum <- summary(ps2_bmi_rate_kcal_cov_stdmod)
+
+
+ps2_bmi_adj <- p.adjust(c(ps2_bmi_bites_cov_sum$coefficients[6, 4], ps2_bmi_sips_cov_sum$coefficients[6, 4], ps2_bmi_bsize_g_cov_sum$coefficients[6, 4], ps2_bmi_bsize_kcal_cov_sum$coefficients[6, 4], ps2_bmi_propractive_cov_sum$coefficients[6, 4], ps2_bmi_mealdur_cov_sum$coefficients[6, 4], ps2_bmi_rate_g_cov_sum$coefficients[6, 4], ps2_bmi_rate_kcal_cov_sum$coefficients[6, 4]), method = 'fdr')
+
+ps2_bmi_adj <- data.frame(ps2_bmi_adj)
+rownames(ps2_bmi_adj) <- c('Bites', 'Sips', 'Bite Size, g', 'Bite Size, kcal', 'Prop Active', 'Meal Duration', 'Eat Rate, g', 'Eat Rate, kcal')
+
+## portion 3  - BMI ####
+
+ps3_bmi_bites_cov_stdmod <- lm(scale(ps3_nbites) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps3_bmi_bites_cov_sum <- summary(ps3_bmi_bites_cov_stdmod)
+
+ps3_bmi_sips_cov_stdmod <- lm(scale(ps3_nsips) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps3_bmi_sips_cov_sum <- summary(ps3_bmi_sips_cov_stdmod)
+
+ps3_bmi_bsize_g_cov_stdmod <- lm(scale(ps3_bite_size_g) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps3_bmi_bsize_g_cov_sum <- summary(ps3_bmi_bsize_g_cov_stdmod)
+
+
+ps3_bmi_bsize_kcal_cov_stdmod <- lm(scale(ps3_bite_size_kcal) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps3_bmi_bsize_kcal_cov_sum <- summary(ps3_bmi_bsize_kcal_cov_stdmod)
+
+ps3_bmi_propactive_cov_stdmod <- lm(scale(ps3_prop_active) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps3_bmi_propractive_cov_sum <- summary(ps3_bmi_propactive_cov_stdmod)
+
+
+ps3_bmi_mealdur_cov_stdmod <- lm(scale(ps3_meal_duration) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps3_bmi_mealdur_cov_sum <- summary(ps3_bmi_mealdur_cov_stdmod)
+
+
+ps3_bmi_rate_g_cov_stdmod <- lm(scale(ps3_eat_rate_g) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps3_bmi_rate_g_cov_sum <- summary(ps3_bmi_rate_g_cov_stdmod)
+
+
+ps3_bmi_rate_kcal_cov_stdmod <- lm(scale(ps3_eat_rate_kcal) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps3_bmi_rate_kcal_cov_sum <- summary(ps3_bmi_rate_kcal_cov_stdmod)
+
+
+ps3_bmi_adj <- p.adjust(c(ps3_bmi_bites_cov_sum$coefficients[6, 4], ps3_bmi_sips_cov_sum$coefficients[6, 4], ps3_bmi_bsize_g_cov_sum$coefficients[6, 4], ps3_bmi_bsize_kcal_cov_sum$coefficients[6, 4], ps3_bmi_propractive_cov_sum$coefficients[6, 4], ps3_bmi_mealdur_cov_sum$coefficients[6, 4], ps3_bmi_rate_g_cov_sum$coefficients[6, 4], ps3_bmi_rate_kcal_cov_sum$coefficients[6, 4]), method = 'fdr')
+
+ps3_bmi_adj <- data.frame(ps3_bmi_adj)
+rownames(ps3_bmi_adj) <- c('Bites', 'Sips', 'Bite Size, g', 'Bite Size, kcal', 'Prop Active', 'Meal Duration', 'Eat Rate, g', 'Eat Rate, kcal')
+
+## portion 4  - BMI ####
+
+ps4_bmi_bites_cov_stdmod <- lm(scale(ps4_nbites) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps4_bmi_bites_cov_sum <- summary(ps4_bmi_bites_cov_stdmod)
+
+ps4_bmi_sips_cov_stdmod <- lm(scale(ps4_nsips) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps4_bmi_sips_cov_sum <- summary(ps4_bmi_sips_cov_stdmod)
+
+ps4_bmi_bsize_g_cov_stdmod <- lm(scale(ps4_bite_size_g) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps4_bmi_bsize_g_cov_sum <- summary(ps4_bmi_bsize_g_cov_stdmod)
+
+
+ps4_bmi_bsize_kcal_cov_stdmod <- lm(scale(ps4_bite_size_kcal) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps4_bmi_bsize_kcal_cov_sum <- summary(ps4_bmi_bsize_kcal_cov_stdmod)
+
+ps4_bmi_propactive_cov_stdmod <- lm(scale(ps4_prop_active) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps4_bmi_propractive_cov_sum <- summary(ps4_bmi_propactive_cov_stdmod)
+
+
+ps4_bmi_mealdur_cov_stdmod <- lm(scale(ps4_meal_duration) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps4_bmi_mealdur_cov_sum <- summary(ps4_bmi_mealdur_cov_stdmod)
+
+
+ps4_bmi_rate_g_cov_stdmod <- lm(scale(ps4_eat_rate_g) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps4_bmi_rate_g_cov_sum <- summary(ps4_bmi_rate_g_cov_stdmod)
+
+
+ps4_bmi_rate_kcal_cov_stdmod <- lm(scale(ps4_eat_rate_kcal) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(bmi_percentile), data = r01_micro_ps)
+ps4_bmi_rate_kcal_cov_sum <- summary(ps4_bmi_rate_kcal_cov_stdmod)
+
+
+ps4_bmi_adj <- p.adjust(c(ps4_bmi_bites_cov_sum$coefficients[6, 4], ps4_bmi_sips_cov_sum$coefficients[6, 4], ps4_bmi_bsize_g_cov_sum$coefficients[6, 4], ps4_bmi_bsize_kcal_cov_sum$coefficients[6, 4], ps4_bmi_propractive_cov_sum$coefficients[6, 4], ps4_bmi_mealdur_cov_sum$coefficients[6, 4], ps4_bmi_rate_g_cov_sum$coefficients[6, 4], ps4_bmi_rate_kcal_cov_sum$coefficients[6, 4]), method = 'fdr')
+
+ps4_bmi_adj <- data.frame(ps4_bmi_adj)
+rownames(ps4_bmi_adj) <- c('Bites', 'Sips', 'Bite Size, g', 'Bite Size, kcal', 'Prop Active', 'Meal Duration', 'Eat Rate, g', 'Eat Rate, kcal')
+
+## portion 1  - FMI ####
+
+ps1_fmi_bites_cov_stdmod <- lm(scale(ps1_nbites) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps1_fmi_bites_cov_sum <- summary(ps1_fmi_bites_cov_stdmod)
+
+ps1_fmi_sips_cov_stdmod <- lm(scale(ps1_nsips) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps1_fmi_sips_cov_sum <- summary(ps1_fmi_sips_cov_stdmod)
+
+ps1_fmi_bsize_g_cov_stdmod <- lm(scale(ps1_bite_size_g) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps1_fmi_bsize_g_cov_sum <- summary(ps1_fmi_bsize_g_cov_stdmod)
+
+
+ps1_fmi_bsize_kcal_cov_stdmod <- lm(scale(ps1_bite_size_kcal) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps1_fmi_bsize_kcal_cov_sum <- summary(ps1_fmi_bsize_kcal_cov_stdmod)
+
+ps1_fmi_propactive_cov_stdmod <- lm(scale(ps1_prop_active) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps1_fmi_propractive_cov_sum <- summary(ps1_fmi_propactive_cov_stdmod)
+
+
+ps1_fmi_mealdur_cov_stdmod <- lm(scale(ps1_meal_duration) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps1_fmi_mealdur_cov_sum <- summary(ps1_fmi_mealdur_cov_stdmod)
+
+
+ps1_fmi_rate_g_cov_stdmod <- lm(scale(ps1_eat_rate_g) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps1_fmi_rate_g_cov_sum <- summary(ps1_fmi_rate_g_cov_stdmod)
+
+
+ps1_fmi_rate_kcal_cov_stdmod <- lm(scale(ps1_eat_rate_kcal) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(ps1_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps1_fmi_rate_kcal_cov_sum <- summary(ps1_fmi_rate_kcal_cov_stdmod)
+
+
+ps1_fmi_adj <- p.adjust(c(ps1_fmi_bites_cov_sum$coefficients[6, 4], ps1_fmi_sips_cov_sum$coefficients[6, 4], ps1_fmi_bsize_g_cov_sum$coefficients[6, 4], ps1_fmi_bsize_kcal_cov_sum$coefficients[6, 4], ps1_fmi_propractive_cov_sum$coefficients[6, 4], ps1_fmi_mealdur_cov_sum$coefficients[6, 4], ps1_fmi_rate_g_cov_sum$coefficients[6, 4], ps1_fmi_rate_kcal_cov_sum$coefficients[6, 4]), method = 'fdr')
+
+ps1_fmi_adj <- data.frame(ps1_fmi_adj)
+rownames(ps1_fmi_adj) <- c('Bites', 'Sips', 'Bite Size, g', 'Bite Size, kcal', 'Prop Active', 'Meal Duration', 'Eat Rate, g', 'Eat Rate, kcal')
+
+## portion 2  - FMI ####
+
+ps2_fmi_bites_cov_stdmod <- lm(scale(ps2_nbites) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps2_fmi_bites_cov_sum <- summary(ps2_fmi_bites_cov_stdmod)
+
+ps2_fmi_sips_cov_stdmod <- lm(scale(ps2_nsips) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps2_fmi_sips_cov_sum <- summary(ps2_fmi_sips_cov_stdmod)
+
+ps2_fmi_bsize_g_cov_stdmod <- lm(scale(ps2_bite_size_g) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps2_fmi_bsize_g_cov_sum <- summary(ps2_fmi_bsize_g_cov_stdmod)
+
+
+ps2_fmi_bsize_kcal_cov_stdmod <- lm(scale(ps2_bite_size_kcal) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps2_fmi_bsize_kcal_cov_sum <- summary(ps2_fmi_bsize_kcal_cov_stdmod)
+
+ps2_fmi_propactive_cov_stdmod <- lm(scale(ps2_prop_active) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps2_fmi_propractive_cov_sum <- summary(ps2_fmi_propactive_cov_stdmod)
+
+
+ps2_fmi_mealdur_cov_stdmod <- lm(scale(ps2_meal_duration) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps2_fmi_mealdur_cov_sum <- summary(ps2_fmi_mealdur_cov_stdmod)
+
+
+ps2_fmi_rate_g_cov_stdmod <- lm(scale(ps2_eat_rate_g) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps2_fmi_rate_g_cov_sum <- summary(ps2_fmi_rate_g_cov_stdmod)
+
+
+ps2_fmi_rate_kcal_cov_stdmod <- lm(scale(ps2_eat_rate_kcal) ~ scale(ps2_freddy_pre_meal) + sex + scale(age_yr) + scale(ps2_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps2_fmi_rate_kcal_cov_sum <- summary(ps2_fmi_rate_kcal_cov_stdmod)
+
+
+ps2_fmi_adj <- p.adjust(c(ps2_fmi_bites_cov_sum$coefficients[6, 4], ps2_fmi_sips_cov_sum$coefficients[6, 4], ps2_fmi_bsize_g_cov_sum$coefficients[6, 4], ps2_fmi_bsize_kcal_cov_sum$coefficients[6, 4], ps2_fmi_propractive_cov_sum$coefficients[6, 4], ps2_fmi_mealdur_cov_sum$coefficients[6, 4], ps2_fmi_rate_g_cov_sum$coefficients[6, 4], ps2_fmi_rate_kcal_cov_sum$coefficients[6, 4]), method = 'fdr')
+
+ps2_fmi_adj <- data.frame(ps2_fmi_adj)
+rownames(ps2_fmi_adj) <- c('Bites', 'Sips', 'Bite Size, g', 'Bite Size, kcal', 'Prop Active', 'Meal Duration', 'Eat Rate, g', 'Eat Rate, kcal')
+
+## portion 3  - FMI ####
+
+ps3_fmi_bites_cov_stdmod <- lm(scale(ps3_nbites) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps3_fmi_bites_cov_sum <- summary(ps3_fmi_bites_cov_stdmod)
+
+ps3_fmi_sips_cov_stdmod <- lm(scale(ps3_nsips) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps3_fmi_sips_cov_sum <- summary(ps3_fmi_sips_cov_stdmod)
+
+ps3_fmi_bsize_g_cov_stdmod <- lm(scale(ps3_bite_size_g) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps3_fmi_bsize_g_cov_sum <- summary(ps3_fmi_bsize_g_cov_stdmod)
+
+
+ps3_fmi_bsize_kcal_cov_stdmod <- lm(scale(ps3_bite_size_kcal) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps3_fmi_bsize_kcal_cov_sum <- summary(ps3_fmi_bsize_kcal_cov_stdmod)
+
+ps3_fmi_propactive_cov_stdmod <- lm(scale(ps3_prop_active) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps3_fmi_propractive_cov_sum <- summary(ps3_fmi_propactive_cov_stdmod)
+
+
+ps3_fmi_mealdur_cov_stdmod <- lm(scale(ps3_meal_duration) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps3_fmi_mealdur_cov_sum <- summary(ps3_fmi_mealdur_cov_stdmod)
+
+
+ps3_fmi_rate_g_cov_stdmod <- lm(scale(ps3_eat_rate_g) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps3_fmi_rate_g_cov_sum <- summary(ps3_fmi_rate_g_cov_stdmod)
+
+
+ps3_fmi_rate_kcal_cov_stdmod <- lm(scale(ps3_eat_rate_kcal) ~ scale(ps3_freddy_pre_meal) + sex + scale(age_yr) + scale(ps3_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps3_fmi_rate_kcal_cov_sum <- summary(ps3_fmi_rate_kcal_cov_stdmod)
+
+
+ps3_fmi_adj <- p.adjust(c(ps3_fmi_bites_cov_sum$coefficients[6, 4], ps3_fmi_sips_cov_sum$coefficients[6, 4], ps3_fmi_bsize_g_cov_sum$coefficients[6, 4], ps3_fmi_bsize_kcal_cov_sum$coefficients[6, 4], ps3_fmi_propractive_cov_sum$coefficients[6, 4], ps3_fmi_mealdur_cov_sum$coefficients[6, 4], ps3_fmi_rate_g_cov_sum$coefficients[6, 4], ps3_fmi_rate_kcal_cov_sum$coefficients[6, 4]), method = 'fdr')
+
+ps3_fmi_adj <- data.frame(ps3_fmi_adj)
+rownames(ps3_fmi_adj) <- c('Bites', 'Sips', 'Bite Size, g', 'Bite Size, kcal', 'Prop Active', 'Meal Duration', 'Eat Rate, g', 'Eat Rate, kcal')
+
+## portion 4  - FMI ####
+
+ps4_fmi_bites_cov_stdmod <- lm(scale(ps4_nbites) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps4_fmi_bites_cov_sum <- summary(ps4_fmi_bites_cov_stdmod)
+
+ps4_fmi_sips_cov_stdmod <- lm(scale(ps4_nsips) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps4_fmi_sips_cov_sum <- summary(ps4_fmi_sips_cov_stdmod)
+
+ps4_fmi_bsize_g_cov_stdmod <- lm(scale(ps4_bite_size_g) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps4_fmi_bsize_g_cov_sum <- summary(ps4_fmi_bsize_g_cov_stdmod)
+
+
+ps4_fmi_bsize_kcal_cov_stdmod <- lm(scale(ps4_bite_size_kcal) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps4_fmi_bsize_kcal_cov_sum <- summary(ps4_fmi_bsize_kcal_cov_stdmod)
+
+ps4_fmi_propactive_cov_stdmod <- lm(scale(ps4_prop_active) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps4_fmi_propractive_cov_sum <- summary(ps4_fmi_propactive_cov_stdmod)
+
+
+ps4_fmi_mealdur_cov_stdmod <- lm(scale(ps4_meal_duration) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps4_fmi_mealdur_cov_sum <- summary(ps4_fmi_mealdur_cov_stdmod)
+
+
+ps4_fmi_rate_g_cov_stdmod <- lm(scale(ps4_eat_rate_g) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps4_fmi_rate_g_cov_sum <- summary(ps4_fmi_rate_g_cov_stdmod)
+
+
+ps4_fmi_rate_kcal_cov_stdmod <- lm(scale(ps4_eat_rate_kcal) ~ scale(ps4_freddy_pre_meal) + sex + scale(age_yr) + scale(ps4_avg_vas) + scale(fmi), data = r01_micro_ps)
+ps4_fmi_rate_kcal_cov_sum <- summary(ps4_fmi_rate_kcal_cov_stdmod)
+
+
+ps4_fmi_adj <- p.adjust(c(ps4_fmi_bites_cov_sum$coefficients[6, 4], ps4_fmi_sips_cov_sum$coefficients[6, 4], ps4_fmi_bsize_g_cov_sum$coefficients[6, 4], ps4_fmi_bsize_kcal_cov_sum$coefficients[6, 4], ps4_fmi_propractive_cov_sum$coefficients[6, 4], ps4_fmi_mealdur_cov_sum$coefficients[6, 4], ps4_fmi_rate_g_cov_sum$coefficients[6, 4], ps4_fmi_rate_kcal_cov_sum$coefficients[6, 4]), method = 'fdr')
+
+ps4_fmi_adj <- data.frame(ps4_fmi_adj)
+rownames(ps4_fmi_adj) <- c('Bites', 'Sips', 'Bite Size, g', 'Bite Size, kcal', 'Prop Active', 'Meal Duration', 'Eat Rate, g', 'Eat Rate, kcal')

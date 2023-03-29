@@ -217,7 +217,16 @@ r01_demo[['mom_ed']] <- factor(r01_demo[['mom_ed']])
 r01_demo[['dad_ed']] <- ifelse(r01_demo[['measured_parent']] == 1, ifelse(r01_demo[['parent_ed']] == 0, 'High School/GED', ifelse(r01_demo[['parent_ed']] < 3, 'AA/Technical Degree', ifelse(r01_demo[['parent_ed']] == 3, 'Bachelor Degree', ifelse(r01_demo[['parent_ed']] < 8, '> Bachelor Degree', 'Other/NA')))), ifelse(r01_demo[['partner_ed']] == 0, 'High School/GED', ifelse(r01_demo[['partner_ed']] < 3, 'AA/Technical Degree', ifelse(r01_demo[['partner_ed']] == 3, 'Bachelor Degree', ifelse(r01_demo[['partner_ed']] < 8, '> Bachelor Degree', 'Other/NA')))))
 r01_demo[['dad_ed']] <- factor(r01_demo[['dad_ed']])
 
+## 5- Anthro Data ####
+# a) Load Data ####
+r01_anthro <- as.data.frame(read_spss(("data/anthro_data.sav")))
+names(r01_anthro)[1] <- 'sub'
 
+r01_anthro_labels <- lapply(r01_anthro, function(x) attributes(x)$label)
+
+r01_anthro[['fmi']] <- (as.numeric(r01_anthro[['dxa_total_fat_mass']])/1000)/(r01_anthro[['height_avg']]/100)^2
+
+r01_anthro[['dxa_total_body_perc_fat']] <- as.numeric(r01_anthro[['dxa_total_body_perc_fat']])
 
 #### Single Coder/wide dataset ####
 
@@ -238,7 +247,9 @@ names(r01_micro_ps)[c(49:71)] <- sapply(ps_names, function(x) paste0('ps3_', x),
 r01_micro_ps <- merge(r01_micro_ps, r01_micro_1coder[r01_micro_1coder$ps == 4, c(1, 3:25)], by = 'sub', all = TRUE)
 names(r01_micro_ps)[c(72:94)] <- sapply(ps_names, function(x) paste0('ps4_', x), USE.NAMES = FALSE)
 
-r01_micro_ps <- merge(r01_demo[c(1, 4, 8:10, 12, 19:20, 14:16, 337:338)], r01_micro_ps[c(1, 3:94)], by = 'sub', all.x = FALSE, all.y = TRUE)
+
+r01_demo_anthro <- merge(r01_demo[c(1, 4, 8:10, 12, 19:20, 14:16, 337:338)], r01_anthro[c(1, 119, 570)], by = 'sub', all = TRUE)
+r01_micro_ps <- merge(r01_demo_anthro, r01_micro_ps[c(1, 3:94)], by = 'sub', all.x = FALSE, all.y = TRUE)
 
 # b) add microstructure video notes ####
 # ad micro ps number
@@ -253,7 +264,7 @@ r01_micro_ps[r01_micro_ps[['sub']] == 1,  'video_issues'] <- 2
 r01_micro_ps <- merge(r01_micro_ps, r01_cebq, by = 'sub', all.x = TRUE, all.y = FALSE)
 r01_micro_ps <- merge(r01_micro_ps, r01_intake[c(1, 38, 47)], by = 'sub', all.x = TRUE, all.y = FALSE)
 
-r01_micro_ps <- r01_micro_ps[c(1:13, 119:120, 106:118, 14:105)]
+r01_micro_ps <- r01_micro_ps[c(1:15, 108:109, 121:122, 110:120, 16:107)]
 
 # c) merge notes with long ps data ####
 r01_micro <- merge(r01_micro, r01_micro_ps[c(1,16:17)], by = 'sub', all = TRUE)
