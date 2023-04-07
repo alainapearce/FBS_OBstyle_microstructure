@@ -90,17 +90,16 @@ means.function.na = function(data, DV, IV){
 ##--group=0 if only have 1 DV, if DV is multiple variables, group is the variable name for the grouping one
 ##if group =! 0, it means you have two DV's/a DV and a covariate. The first variable listed in your DV vector will be represtened by different colors in the legend. This will be the "group" variable and will create side by side bars. The second variable will have levels represented on x-axis. note: xpd=False restrains bars to graphic pane (can truncate lower part of graph)
 bar_graph.se = function(means, er, xlab, ylab, ymax, ymin, group){
-  if (group==0) {
+  if (sum(group==0) >0) {
     barx<-barplot(means, col="cornflowerblue", ylab=ylab, xlab=xlab, ylim=c(ymin, ymax), xpd=FALSE)
     axis(2)
     axis(1, at=c(0,7), labels=FALSE)
     #this adds the SE wiskers
     arrows(barx, means+er, barx, means-er, angle=90, code=3, length=0.2)
-  }
-
-  else {
+  } else {
+    palette(c( "turquoise4", "mediumturquoise",  "paleturquoise", "lightcyan","powderblue", "lightsteelblue2"))
     #palette(c("steelblue4", "lightsteelblue2", "cornflowerblue", "cyan3", "darkcyan", "aquamarine4", "royalblue4","cornflowerblue", "darkturquoise"))
-    palette(c("blue", "cadetblue1", "cornflowerblue", "cyan3", "darkcyan", "aquamarine4", "royalblue4","cornflowerblue", "darkturquoise"))
+    #palette(c("blue", "cadetblue1", "cornflowerblue", "cyan3", "darkcyan", "aquamarine4", "royalblue4","cornflowerblue", "darkturquoise"))
     len=length(levels(group))
     col.list = 1:len
     col.list_dif = 7:9

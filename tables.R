@@ -37,9 +37,9 @@ micro_demo_data <- r01_micro_ps[c(5:6, 8, 14:15, 9:13)]
 demo_tab <-
   tbl_summary(
     data = micro_demo_data,
-    value = list(sex ~ "Sex", age_yr ~ "Age, yr",  bmi_percentile ~ "BMI %tile", dxa_total_body_perc_fat ~ "%Body Fat", fmi ~ 'Fat Mass Index', ethnicity ~ "Ethnicity", race ~ "Race", income ~ "Income",  mom_ed ~ "Mother's Education", dad_ed ~ "Father's Education"),
-    label = list(sex ~ "Sex", age_yr ~ "Age, yr",  bmi_percentile ~ "BMI %tile", dxa_total_body_perc_fat ~ "%Body Fat", fmi ~ 'Fat Mass Index', ethnicity ~ "Ethnicity", race ~ "Race", income ~ "Income",  mom_ed ~ "Mother's Education", dad_ed ~ "Father's Education"),
-    type = list(sex ~ "categorical", age_yr ~ "continuous", bmi_percentile ~ "continuous", dxa_total_body_perc_fat ~ "continuous", fmi ~ 'continuous', ethnicity ~ "categorical", race ~ "categorical", income ~ "categorical", mom_ed ~ "categorical", dad_ed ~ "categorical"),
+    value = list(sex ~ "Sex", age_yr ~ "Age, yr",  bmi_percentile ~ "BMI %tile", dxa_est_vat_volume ~ "VAT, cm3", fmi ~ 'Fat Mass Index', ethnicity ~ "Ethnicity", race ~ "Race", income ~ "Income",  mom_ed ~ "Mother's Education", dad_ed ~ "Father's Education"),
+    label = list(sex ~ "Sex", age_yr ~ "Age, yr",  bmi_percentile ~ "BMI %tile", dxa_est_vat_volume ~ "VAT, cm3", fmi ~ 'Fat Mass Index', ethnicity ~ "Ethnicity", race ~ "Race", income ~ "Income",  mom_ed ~ "Mother's Education", dad_ed ~ "Father's Education"),
+    type = list(sex ~ "categorical", age_yr ~ "continuous", bmi_percentile ~ "continuous", dxa_est_vat_volume ~ "continuous", fmi ~ 'continuous', ethnicity ~ "categorical", race ~ "categorical", income ~ "categorical", mom_ed ~ "categorical", dad_ed ~ "categorical"),
     statistic = all_continuous() ~ c("{mean} ({sd})"),
     missing = "ifany",
     digits = all_continuous() ~ 1)

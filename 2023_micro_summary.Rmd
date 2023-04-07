@@ -49,7 +49,7 @@ geometry: margin=1.3cm
 ```
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(tidy = TRUE, tidy.opts = list(comment = FALSE), echo = TRUE, fig.width=6, fig.height=4, fig.path='figs/', echo=FALSE, warning=FALSE, message=FALSE, comment = NA)
+knitr::opts_chunk$set(tidy = TRUE, tidy.opts = list(comment = FALSE), echo = TRUE, fig.width=11, fig.height=8, fig.path='figs/', echo=FALSE, warning=FALSE, message=FALSE, comment = NA)
 ```
 
 <!-- load startup file and any extra packages -->
@@ -139,53 +139,29 @@ kable(icc_table, "latex",  digits = 3, caption = "Coding Reliability - ICC", boo
 \FloatBarrier
 
 ```{r cormat_ps1, echo=FALSE, results='asis'}
-kable(ps1_cormat, "latex",  digits = 3, caption = "Portion Size 1: Correlation Matrix", booktabs=TRUE) %>%
-  kable_styling(latex_options = c("hold_position", "repeat_header"))
+kable(ps1_cormat, "latex",  digits = 3, caption = "Portion Size 1: Correlation Matrix", booktabs=TRUE, longtable = FALSE) %>% kableExtra::landscape() %>% 
+  kableExtra::kable_styling(latex_options = c("hold_position", float.env = "sidewaystable", "scale_down"))
 ```
 
 \FloatBarrier
 
 ```{r cormat_ps2, echo=FALSE, results='asis'}
-kable(ps2_cormat, "latex",  digits = 3, caption = "Portion Size 2: Correlation Matrix", booktabs=TRUE) %>%
-  kable_styling(latex_options = c("hold_position", "repeat_header"))
+kable(ps2_cormat, "latex",  digits = 3, caption = "Portion Size 2: Correlation Matrix", booktabs=TRUE, longtable = FALSE) %>% kableExtra::landscape() %>% 
+  kableExtra::kable_styling(latex_options = c("hold_position", float.env = "sidewaystable", "scale_down"))
 ```
 
 \FloatBarrier
 
 ```{r cormat_ps3, echo=FALSE, results='asis'}
-kable(ps3_cormat, "latex",  digits = 3, caption = "Portion Size 3: Correlation Matrix", booktabs=TRUE) %>%
-  kable_styling(latex_options = c("hold_position", "repeat_header"))
+kable(ps3_cormat, "latex",  digits = 3, caption = "Portion Size 3: Correlation Matrix", booktabs=TRUE, longtable = FALSE) %>% kableExtra::landscape() %>% 
+  kableExtra::kable_styling(latex_options = c("hold_position", float.env = "sidewaystable", "scale_down"))
 ```
 
 \FloatBarrier
 
 ```{r cormat_ps4, echo=FALSE, results='asis'}
-kable(ps1_cormat, "latex",  digits = 3, caption = "Portion Size 4: Correlation Matrix", booktabs=TRUE) %>%
-  kable_styling(latex_options = c("hold_position", "repeat_header"))
-```
-
-\FloatBarrier
-
-```{r cormat_fig_ps1, echo=FALSE, include = TRUE}
-ps1_mat_plot
-```
-
-\FloatBarrier
-
-```{r cormat_fig_ps2, echo=FALSE, include = TRUE}
-ps2_mat_plot
-```
-
-\FloatBarrier
-
-```{r cormat_fig_ps3, echo=FALSE, include = TRUE}
-ps3_mat_plot
-```
-
-\FloatBarrier
-
-```{r cormat_fig_ps4, echo=FALSE, include = TRUE}
-ps4_mat_plot
+kable(ps1_cormat, "latex",  digits = 3, caption = "Portion Size 4: Correlation Matrix", booktabs=TRUE, longtable = FALSE) %>% kableExtra::landscape() %>% 
+  kableExtra::kable_styling(latex_options = c("hold_position", float.env = "sidewaystable", "scale_down"))
 ```
 
 \FloatBarrier
@@ -195,12 +171,6 @@ ps4_mat_plot
 ```{r cormat_rmcorr, echo=FALSE, results='asis'}
 kable(boot_mat, caption = 'Repeated Measures: Correlation Matrix', format = "latex", booktabs = TRUE, longtable = FALSE) %>% kableExtra::landscape() %>% 
   kableExtra::kable_styling(latex_options = c("hold_position", float.env = "sidewaystable", "scale_down"))
-```
-
-\FloatBarrier
-
-```{r cormat_fig_rmcorr, echo=FALSE, include = FALSE}
-rmcorr_mat_plot
 ```
 
 
@@ -213,6 +183,142 @@ kable(as.matrix(ps_icc_tab), "latex",  digits = 3, caption = "Coding Reliability
   kable_styling(latex_options = c("hold_position", "repeat_header"))
 ```
 
+## Univariate Tests of Portion Size
+
+\FloatBarrier
+
+```{r ps_beh_models, echo=FALSE, include = FALSE}
+bar_graph.se(ps_beh_betas$ps_beh_betas, er = ps_beh_se$ps_beh_se, xlab = 'Behavior', ylab = 'Standardized Coefficients for Portion Size', ymax = 0.6, ymin = -0.6, group = 0)
+```
+
+\FloatBarrier
+
+```{r ps_beh_padj, echo=FALSE, results='asis'}
+kable(ps_beh_padj, "latex",  digits = 3, caption = "Portion Size and Behaviors - FDR adjusted pvalues", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r nbites_ps_mod, echo=FALSE, results='asis'}
+nbites_sum <- summary(nbites_mod)
+kable(round(nbites_sum$coefficients, 3), caption = 'Number of Bites by Portion Size Meal', format = "latex", longtable = FALSE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r nsips_ps_mod, echo=FALSE, results='asis'}
+nsips_sum <- summary(nsips_mod)
+kable(round(nsips_sum$coefficients, 3), caption = 'Number of Sips by Portion Size Meal', format = "latex", longtable = FALSE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r active_eat_ps_mod, echo=FALSE, results='asis'}
+active_eat_sum <- summary(active_eat_mod)
+kable(round(active_eat_sum$coefficients, 3), caption = 'Active Eating Time (min) by Portion Size Meal', format = "latex", longtable = FALSE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r meal_dur_ps_mod, echo=FALSE, results='asis'}
+meal_dur_sum <- summary(meal_dur_mod)
+kable(round(meal_dur_sum$coefficients, 3), caption = 'Meal Duration (min) by Portion Size Meal', format = "latex", longtable = FALSE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r bite_latency_ps_mod, echo=FALSE, results='asis'}
+bite_latency_sum <- summary(bite_latency_mod)
+kable(round(bite_latency_sum$coefficients, 3), caption = 'Latency to First Bite (min) by Portion Size Meal', format = "latex", longtable = FALSE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r bite_rate_ps_mod, echo=FALSE, results='asis'}
+bite_rate_sum <- summary(bite_rate_mod)
+kable(round(bite_rate_sum$coefficients, 3), caption = 'Bites/min by Portion Size Meal', format = "latex", longtable = FALSE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r bite_rate_active_ps_mod, echo=FALSE, results='asis'}
+bite_rate_active_sum <- summary(bite_rate_active_mod)
+kable(round(bite_rate_active_sum$coefficients, 3), caption = 'Bites/min (active) by Portion Size Meal', format = "latex", longtable = FALSE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r sip_rate_ps_mod, echo=FALSE, results='asis'}
+sip_rate_sum <- summary(sip_rate_mod)
+kable(round(sip_rate_sum$coefficients, 3), caption = 'Sips/min by Portion Size Meal', format = "latex", longtable = FALSE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r sip_rate_active_ps_mod, echo=FALSE, results='asis'}
+sip_rate_active_sum <- summary(sip_rate_active_mod)
+kable(round(sip_rate_active_sum$coefficients, 3), caption = 'Sips/min (active) by Portion Size Meal', format = "latex", longtable = FALSE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r bite_g_ps_mod, echo=FALSE, results='asis'}
+bite_size_g_sum <- summary(bite_size_g_mod)
+kable(round(bite_size_g_sum$coefficients, 3), caption = 'g/Bite by Portion Size Meal', format = "latex", longtable = FALSE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r bite_kcal_ps_mod, echo=FALSE, results='asis'}
+bite_size_kcal_sum <- summary(bite_size_kcal_mod)
+kable(round(bite_size_kcal_sum$coefficients, 3), caption = 'kcal/Bite by Portion Size Meal', format = "latex", longtable = FALSE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r g_rate_ps_mod, echo=FALSE, results='asis'}
+eat_rate_g_sum <- summary(eat_rate_g_mod)
+kable(round(eat_rate_g_sum$coefficients, 3), caption = 'g/min by Portion Size Meal', format = "latex", longtable = FALSE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r kcal_rate_ps_mod, echo=FALSE, results='asis'}
+eat_rate_kcal_sum <- summary(eat_rate_kcal_mod)
+kable(round(eat_rate_kcal_sum$coefficients, 3), caption = 'kcal/min by Portion Size Meal', format = "latex", longtable = FALSE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r g_rate_active_ps_mod, echo=FALSE, results='asis'}
+eat_rate_active_g_sum <- summary(eat_rate_active_g_mod)
+kable(round(eat_rate_active_g_sum$coefficients, 3), caption = 'g/min (active) by Portion Size Meal', format = "latex", longtable = FALSE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r kcal_rate_active_ps_mod, echo=FALSE, results='asis'}
+eat_rate_active_kcal_sum <- summary(eat_rate_active_kcal_mod)
+kable(round(eat_rate_active_kcal_sum$coefficients, 3), caption = 'kcal/min (active) by Portion Size Meal', format = "latex", longtable = FALSE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
 
 # Replication of 'Obesogenic' Style of Eating
 
@@ -349,7 +455,23 @@ kable(ps4_kcal_rwa$result, "latex",  digits = 3, caption = "Portion Size 4 - Rel
 
 \FloatBarrier
 
+```{r ps_bmi_models_plot, echo=FALSE, include = TRUE}
+bar_graph.se(ps_bmi_betas, er = ps_bmi_se, xlab = 'Behavior', ylab = 'Standardized Coefficients for BMI', ymax = 0.75, ymin = -0.75, group = psxbeh$Portion)
+```
+
+
+\FloatBarrier
+
 ### Portion Size 1
+
+\FloatBarrier
+
+```{r ps1_bmi_padj, echo=FALSE, results='asis'}
+kable(ps1_bmi_adj, "latex",  digits = 3, caption = "Portion Size 1 - FDR adjusted pvalues", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
 
 ```{r ps1_bmi_bites, echo=FALSE, results='asis'}
 kable(ps1_bmi_bites_cov_sum$coefficients, "latex",  digits = 3, caption = "Portion Size 1 - Standardized Coefficitens for Association Between Bites and BMI Percentile (adjusted for age, sex, liking, and fullness)", booktabs=TRUE) %>%
@@ -417,6 +539,15 @@ kable(ps1_bmi_adj, "latex",  digits = 3, caption = "Portion Size 1 - FDR Adjuste
 
 ### Portion Size 2
 
+\FloatBarrier
+
+```{r ps2_bmi_padj, echo=FALSE, results='asis'}
+kable(ps2_bmi_adj, "latex",  digits = 3, caption = "Portion Size 2 - FDR adjusted pvalues", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
 ```{r ps2_bmi_bites, echo=FALSE, results='asis'}
 kable(ps2_bmi_bites_cov_sum$coefficients, "latex",  digits = 3, caption = "Portion Size 2 - Standardized Coefficitens for Association Between Bites and BMI Percentile (adjusted for age, sex, liking, and fullness)", booktabs=TRUE) %>%
   kable_styling(latex_options = c("hold_position", "repeat_header"))
@@ -482,6 +613,15 @@ kable(ps2_bmi_adj, "latex",  digits = 3, caption = "Portion Size 2 - FDR Adjuste
 \FloatBarrier
 
 ### Portion Size 3
+
+\FloatBarrier
+
+```{r ps3_bmi_padj, echo=FALSE, results='asis'}
+kable(ps3_bmi_adj, "latex",  digits = 3, caption = "Portion Size 3 - FDR adjusted pvalues", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
 
 ```{r ps3_bmi_bites, echo=FALSE, results='asis'}
 kable(ps3_bmi_bites_cov_sum$coefficients, "latex",  digits = 3, caption = "Portion Size 3 - Standardized Coefficitens for Association Between Bites and BMI Percentile (adjusted for age, sex, liking, and fullness)", booktabs=TRUE) %>%
@@ -549,6 +689,15 @@ kable(ps3_bmi_adj, "latex",  digits = 3, caption = "Portion Size 3 - FDR Adjuste
 
 ### Portion Size 4
 
+\FloatBarrier
+
+```{r ps4_bmi_padj, echo=FALSE, results='asis'}
+kable(ps4_bmi_adj, "latex",  digits = 3, caption = "Portion Size 4 - FDR adjusted pvalues", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
 ```{r ps4_bmi_bites, echo=FALSE, results='asis'}
 kable(ps4_bmi_bites_cov_sum$coefficients, "latex",  digits = 3, caption = "Portion Size 4 - Standardized Coefficitens for Association Between Bites and BMI Percentile (adjusted for age, sex, liking, and fullness)", booktabs=TRUE) %>%
   kable_styling(latex_options = c("hold_position", "repeat_header"))
@@ -615,7 +764,23 @@ kable(ps4_bmi_adj, "latex",  digits = 3, caption = "Portion Size 4 - FDR Adjuste
 
 ## Associaiton with Fat Mass Index
 
+\FloatBarrier
+
+```{r ps_fmi_models_plot, echo=FALSE, include = TRUE}
+bar_graph.se(ps_fmi_betas, er = ps_fmi_se, xlab = 'Behavior', ylab = 'Standardized Coefficients for FMI', ymax = 0.75, ymin = -0.75, group = psxbeh$Portion)
+```
+
+\FloatBarrier
 ### Portion Size 1
+
+\FloatBarrier
+
+```{r ps1_fmi_padj, echo=FALSE, results='asis'}
+kable(ps1_fmi_adj, "latex",  digits = 3, caption = "Portion Size 1 - FDR adjusted pvalues", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
 
 ```{r ps1_fmi_bites, echo=FALSE, results='asis'}
 kable(ps1_fmi_bites_cov_sum$coefficients, "latex",  digits = 3, caption = "Portion Size 1 - Standardized Coefficitens for Association Between Bites and Fat Mass Index (adjusted for age, sex, liking, and fullness)", booktabs=TRUE) %>%
@@ -683,6 +848,16 @@ kable(ps1_fmi_adj, "latex",  digits = 3, caption = "Portion Size 1 - FDR Adjuste
 
 ### Portion Size 2
 
+
+\FloatBarrier
+
+```{r ps2_fmi_padj, echo=FALSE, results='asis'}
+kable(ps2_fmi_adj, "latex",  digits = 3, caption = "Portion Size 2 - FDR adjusted pvalues", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
 ```{r ps2_fmi_bites, echo=FALSE, results='asis'}
 kable(ps2_fmi_bites_cov_sum$coefficients, "latex",  digits = 3, caption = "Portion Size 2 - Standardized Coefficitens for Association Between Bites and Fat Mass Index (adjusted for age, sex, liking, and fullness)", booktabs=TRUE) %>%
   kable_styling(latex_options = c("hold_position", "repeat_header"))
@@ -749,6 +924,16 @@ kable(ps2_fmi_adj, "latex",  digits = 3, caption = "Portion Size 2 - FDR Adjuste
 
 ### Portion Size 3
 
+
+\FloatBarrier
+
+```{r ps3_fmi_padj, echo=FALSE, results='asis'}
+kable(ps3_fmi_adj, "latex",  digits = 3, caption = "Portion Size 3 - FDR adjusted pvalues", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
 ```{r ps3_fmi_bites, echo=FALSE, results='asis'}
 kable(ps3_fmi_bites_cov_sum$coefficients, "latex",  digits = 3, caption = "Portion Size 3 - Standardized Coefficitens for Association Between Bites and Fat Mass Index (adjusted for age, sex, liking, and fullness)", booktabs=TRUE) %>%
   kable_styling(latex_options = c("hold_position", "repeat_header"))
@@ -814,6 +999,15 @@ kable(ps3_fmi_adj, "latex",  digits = 3, caption = "Portion Size 3 - FDR Adjuste
 \FloatBarrier
 
 ### Portion Size 4
+
+\FloatBarrier
+
+```{r ps4_fmi_padj, echo=FALSE, results='asis'}
+kable(ps4_fmi_adj, "latex",  digits = 3, caption = "Portion Size 4 - FDR adjusted pvalues", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
 
 ```{r ps4_fmi_bites, echo=FALSE, results='asis'}
 kable(ps4_fmi_bites_cov_sum$coefficients, "latex",  digits = 3, caption = "Portion Size 4 - Standardized Coefficitens for Association Between Bites and Fat Mass Index (adjusted for age, sex, liking, and fullness)", booktabs=TRUE) %>%

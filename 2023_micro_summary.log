@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.30)  28 MAR 2023 19:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.30)  7 APR 2023 14:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -706,79 +706,45 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 \tf@toc=\write3
 \openout3 = `2023_micro_summary.toc'.
 
+<figs/load_scripts-1.pdf, id=16, 627.34375pt x 506.89375pt>
+File: figs/load_scripts-1.pdf Graphic file (type pdf)
+<use figs/load_scripts-1.pdf>
+Package pdftex.def Info: figs/load_scripts-1.pdf  used on input line 104.
+(pdftex.def)             Requested size: 469.76956pt x 379.57382pt.
+<figs/load_scripts-2.pdf, id=17, 627.34375pt x 506.89375pt>
+File: figs/load_scripts-2.pdf Graphic file (type pdf)
+<use figs/load_scripts-2.pdf>
+Package pdftex.def Info: figs/load_scripts-2.pdf  used on input line 105.
+(pdftex.def)             Requested size: 469.76956pt x 379.57382pt.
 [1
 
-{/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+{/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2 <./f
+igs/load_scripts-1.pdf>] [3 <./figs/load_scripts-2.pdf>]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[2
+[4
 
 ]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[3]
-Overfull \hbox (772.16891pt too wide) in paragraph at lines 281--306
- [][] 
- []
+[5] [6
+
+] [7
+
+] [8
 
 
-Overfull \hbox (772.16891pt too wide) in paragraph at lines 314--339
- [][] 
- []
+] [9
 
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[4]
-Overfull \hbox (772.16891pt too wide) in paragraph at lines 347--372
- [][] 
- []
+] [10
 
 
-Overfull \hbox (772.16891pt too wide) in paragraph at lines 380--405
- [][] 
- []
+] [11
 
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[5]
-<figs/cormat_fig_ps1-1.pdf, id=70, 405.515pt x 251.94125pt>
-File: figs/cormat_fig_ps1-1.pdf Graphic file (type pdf)
-<use figs/cormat_fig_ps1-1.pdf>
-Package pdftex.def Info: figs/cormat_fig_ps1-1.pdf  used on input line 409.
-(pdftex.def)             Requested size: 405.51399pt x 251.94063pt.
-<figs/cormat_fig_ps2-1.pdf, id=71, 405.515pt x 251.94125pt>
-File: figs/cormat_fig_ps2-1.pdf Graphic file (type pdf)
-<use figs/cormat_fig_ps2-1.pdf>
-Package pdftex.def Info: figs/cormat_fig_ps2-1.pdf  used on input line 413.
-(pdftex.def)             Requested size: 405.51399pt x 251.94063pt.
-[6 <./figs/cormat_fig_ps1-1.pdf>]
-<figs/cormat_fig_ps3-1.pdf, id=85, 405.515pt x 251.94125pt>
-File: figs/cormat_fig_ps3-1.pdf Graphic file (type pdf)
-<use figs/cormat_fig_ps3-1.pdf>
-Package pdftex.def Info: figs/cormat_fig_ps3-1.pdf  used on input line 417.
-(pdftex.def)             Requested size: 405.51399pt x 251.94063pt.
-<figs/cormat_fig_ps4-1.pdf, id=86, 405.515pt x 251.94125pt>
-File: figs/cormat_fig_ps4-1.pdf Graphic file (type pdf)
-<use figs/cormat_fig_ps4-1.pdf>
-Package pdftex.def Info: figs/cormat_fig_ps4-1.pdf  used on input line 421.
-(pdftex.def)             Requested size: 405.51399pt x 251.94063pt.
-[7 <./figs/cormat_fig_ps2-1.pdf> <./figs/cormat_fig_ps3-1.pdf>]
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[8 <./figs/cormat_fig_ps4-1.pdf>]
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[9]
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[10] [11] [12
+] [12
 
 ]
 
@@ -827,14 +793,17 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [23]
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
+<figs/ps_bmi_models_plot-1.pdf, id=210, 627.34375pt x 506.89375pt>
+File: figs/ps_bmi_models_plot-1.pdf Graphic file (type pdf)
+<use figs/ps_bmi_models_plot-1.pdf>
+Package pdftex.def Info: figs/ps_bmi_models_plot-1.pdf  used on input line 1371
+.
+(pdftex.def)             Requested size: 469.76956pt x 379.57382pt.
 [24]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[25]
+[25 <./figs/ps_bmi_models_plot-1.pdf>]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
@@ -879,10 +848,16 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [36]
+<figs/ps_fmi_models_plot-1.pdf, id=323, 627.34375pt x 506.89375pt>
+File: figs/ps_fmi_models_plot-1.pdf Graphic file (type pdf)
+<use figs/ps_fmi_models_plot-1.pdf>
+Package pdftex.def Info: figs/ps_fmi_models_plot-1.pdf  used on input line 2257
+.
+(pdftex.def)             Requested size: 469.76956pt x 379.57382pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[37]
+[37 <./figs/ps_fmi_models_plot-1.pdf>]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
@@ -890,12 +865,48 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[39] [40] (./2023_micro_summary.aux) ) 
+[39]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[40]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[41]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[42]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[43]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[44]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[45]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[46]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[47]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[48] [49] (./2023_micro_summary.aux) ) 
 Here is how much of TeX's memory you used:
- 17481 strings out of 478268
- 287906 string characters out of 5846347
- 678040 words of memory out of 5000000
- 35088 multiletter control sequences out of 15000+600000
+ 17508 strings out of 478268
+ 288305 string characters out of 5846347
+ 642669 words of memory out of 5000000
+ 35097 multiletter control sequences out of 15000+600000
  527213 words of font info for 112 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  74i,13n,77p,1015b,365s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -907,10 +918,10 @@ ocal/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texliv
 e/2022/texmf-dist/fonts/type1/public/lm/lmr17.pfb></usr/local/texlive/2022/texm
 f-dist/fonts/type1/public/lm/lmr6.pfb></usr/local/texlive/2022/texmf-dist/fonts
 /type1/public/lm/lmr8.pfb>
-Output written on 2023_micro_summary.pdf (40 pages, 276227 bytes).
+Output written on 2023_micro_summary.pdf (49 pages, 296354 bytes).
 PDF statistics:
- 509 PDF objects out of 1000 (max. 8388607)
- 432 compressed objects within 5 object streams
- 206 named destinations out of 1000 (max. 500000)
+ 558 PDF objects out of 1000 (max. 8388607)
+ 476 compressed objects within 5 object streams
+ 224 named destinations out of 1000 (max. 500000)
  32885 words of extra memory for PDF output out of 35830 (max. 10000000)
 

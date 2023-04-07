@@ -25,97 +25,24 @@
 
 # source('setup.R')
 
-## ps correlation heatmaps ####
-x <- seq(1, 16, 1)
-y <- sapply(varnames_rmcorr, function(x) gsub('_c1', '', x), USE.NAMES = FALSE)
-y <- sapply(seq(1, 16, 1), function(x) paste0(x, '_', y[[x]]), USE.NAMES = FALSE)
+## Behavior across PS models ####
+# ps_beh_models_fig <- bar_graph.se(ps_beh_betas$ps_beh_betas, er = ps_beh_se$ps_beh_se, xlab = 'Behavior', ylab = 'Standardized Coefficients for Portion Size', ymax = 0.6, ymin = -0.6, group = 0)
 
-ps_plot_dat <- expand.grid(y, x)
-ps1_mat_vect <- as.numeric(c(ps1_cormat))
-ps1_mat_vect <- ifelse(is.na(ps1_mat_vect), 0, ps1_mat_vect)
-ps_plot_dat$ps1 <- ps1_mat_vect
+## BMI across PS ####
+ps_bmi_betas <- rbind(ps1_bmi_betas$ps1_bmi_betas, ps2_bmi_betas$ps2_bmi_betas, ps3_bmi_betas$ps3_bmi_betas, ps4_bmi_betas$ps4_bmi_betas)
 
-ps2_mat_vect <- as.numeric(c(ps2_cormat))
-ps2_mat_vect <- ifelse(is.na(ps2_mat_vect), 0, ps2_mat_vect)
-ps_plot_dat$ps2 <- ps2_mat_vect
+ps_bmi_se <- rbind(ps1_bmi_se$ps1_bmi_se, ps2_bmi_se$ps2_bmi_se, ps3_bmi_se$ps3_bmi_se, ps4_bmi_se$ps4_bmi_se)
 
-ps3_mat_vect <- as.numeric(c(ps3_cormat))
-ps3_mat_vect <- ifelse(is.na(ps3_mat_vect), 0, ps3_mat_vect)
-ps_plot_dat$ps3 <- ps3_mat_vect
+psxbeh <- data.frame(c(rep(1, 8), rep(2, 8), rep(3, 8), rep(4, 8)), rep(row.names(ps1_bmi_betas), 4))
+names(psxbeh) <- c('Portion', 'Behavior')
+psxbeh$Portion <- as.factor(psxbeh$Portion)
+psxbeh$Behavior <- as.factor(psxbeh$Behavior)
 
-ps4_mat_vect <- as.numeric(c(ps4_cormat))
-ps4_mat_vect <- ifelse(is.na(ps4_mat_vect), 0, ps4_mat_vect)
-ps_plot_dat$ps4 <- ps4_mat_vect
+ps_bmi_model_fig <- bar_graph.se(means = ps_bmi_betas, er = ps_bmi_se, xlab = 'Behavior', ylab = 'Standardized Coefficients for BMI', ymax = 0.75, ymin = -0.75, group = psxbeh$Portion)
 
-ps_plot_dat$Var1 <- ordered(ps_plot_dat$Var1, levels = rev(y))
+## FMI across PS ####
+ps_fmi_betas <- rbind(ps1_fmi_betas$ps1_fmi_betas, ps2_fmi_betas$ps2_fmi_betas, ps3_fmi_betas$ps3_fmi_betas, ps4_fmi_betas$ps4_fmi_betas)
 
-ps1_mat_plot <- ggplot(data = ps_plot_dat, aes(x = Var2, y = Var1)) +
-  geom_raster(aes(fill = cut(ps1, breaks = c(-1, -0.5, -0.3, -0.1, 0, 0.1, 0.3, 0.5, 1)))) +
-  scale_fill_manual(values = c("darkblue", "blue", "lightblue", "white", "white",
-                               "rosybrown1", "red", "red3")) +
-  scale_x_continuous(breaks=seq(1, 15, 1)) +
-  labs(title="Portion Size 1 Correlations",
-       x="",
-       y = "") +
-  theme_pubr(base_size = 16) +
-  theme(plot.title = element_text(hjust = 0.5),
-        legend.title = element_blank())
+ps_fmi_se <- rbind(ps1_fmi_se$ps1_fmi_se, ps2_fmi_se$ps2_fmi_se, ps3_fmi_se$ps3_fmi_se, ps4_fmi_se$ps4_fmi_se)
 
-ps2_mat_plot <- ggplot(data = ps_plot_dat, aes(x = Var2, y = Var1)) +
-  geom_raster(aes(fill = cut(ps2, breaks = c(-1, -0.5, -0.3, -0.1, 0, 0.1, 0.3, 0.5, 1)))) +
-  scale_fill_manual(values = c("darkblue", "blue", "lightblue", "white", "white",
-                               "rosybrown1", "red", "red3")) +
-  scale_x_continuous(breaks=seq(1, 15, 1)) +
-  labs(title="Portion Size 2 Correlations",
-       x="",
-       y = "") +
-  theme_pubr(base_size = 16) +
-  theme(plot.title = element_text(hjust = 0.5),
-        legend.title = element_blank())
-
-ps3_mat_plot <- ggplot(data = ps_plot_dat, aes(x = Var2, y = Var1)) +
-  geom_raster(aes(fill = cut(ps3, breaks = c(-1, -0.5, -0.3, -0.1, 0, 0.1, 0.3, 0.5, 1)))) +
-  scale_fill_manual(values = c("darkblue", "blue", "lightblue", "white", "white",
-                               "rosybrown1", "red", "red3")) +
-  scale_x_continuous(breaks=seq(1, 15, 1)) +
-  labs(title="Portion Size 3 Correlations",
-       x="",
-       y = "") +
-  theme_pubr(base_size = 16) +
-  theme(plot.title = element_text(hjust = 0.5),
-        legend.title = element_blank())
-
-ps4_mat_plot <- ggplot(data = ps_plot_dat, aes(x = Var2, y = Var1)) +
-  geom_raster(aes(fill = cut(ps4, breaks = c(-1, -0.5, -0.3, -0.1, 0, 0.1, 0.3, 0.5, 1)))) +
-  scale_fill_manual(values = c("darkblue", "blue", "lightblue", "white", "white",
-                               "rosybrown1", "red", "red3")) +
-  scale_x_continuous(breaks=seq(1, 15, 1)) +
-  labs(title="Portion Size 4 Correlations",
-       x="",
-       y = "") +
-  theme_pubr(base_size = 16) +
-  theme(plot.title = element_text(hjust = 0.5),
-        legend.title = element_blank())
-
-## rmcorr heatmap ####
-x <- seq(1, 16, 1)
-y <- sapply(varnames_rmcorr, function(x) gsub('_c1', '', x), USE.NAMES = FALSE)
-y <- sapply(seq(1, 16, 1), function(x) paste0(x, '_', y[[x]]), USE.NAMES = FALSE)
-
-rmcorr_plot_dat <- expand.grid(y, x)
-boot_mat_vect <- as.numeric(c(boot_mat))
-boot_mat_vect <- ifelse(is.na(boot_mat_vect), 0, boot_mat_vect)
-rmcorr_plot_dat$rmcorr_boot <- boot_mat_vect
-rmcorr_plot_dat$Var1 <- ordered(rmcorr_plot_dat$Var1, levels = rev(y))
-
-rmcorr_mat_plot <- ggplot(data = rmcorr_plot_dat, aes(x = Var2, y = Var1)) +
-  geom_raster(aes(fill = cut(rmcorr_boot, breaks = c(-1, -0.5, -0.3, -0.1, 0, 0.1, 0.3, 0.5, 1)))) +
-  scale_fill_manual(values = c("darkblue", "blue", "lightblue", "white", "white",
-                               "rosybrown1", "red", "red3")) +
-  scale_x_continuous(breaks=seq(1, 15, 1)) +
-  labs(title="Repeated Measures Correlations",
-       x="",
-       y = "") +
-  theme_pubr(base_size = 16) +
-  theme(plot.title = element_text(hjust = 0.5),
-        legend.title = element_blank())
+ps_fmi_model_fig <- bar_graph.se(ps_fmi_betas, er = ps_fmi_se, xlab = 'Behavior', ylab = 'Standardized Coefficients for FMI', ymax = 0.75, ymin = -0.75, group = psxbeh$Portion)

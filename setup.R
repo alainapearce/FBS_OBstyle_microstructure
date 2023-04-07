@@ -226,7 +226,7 @@ r01_anthro_labels <- lapply(r01_anthro, function(x) attributes(x)$label)
 
 r01_anthro[['fmi']] <- (as.numeric(r01_anthro[['dxa_total_fat_mass']])/1000)/(r01_anthro[['height_avg']]/100)^2
 
-r01_anthro[['dxa_total_body_perc_fat']] <- as.numeric(r01_anthro[['dxa_total_body_perc_fat']])
+r01_anthro[['dxa_est_vat_volume']] <- as.numeric(r01_anthro[['dxa_est_vat_volume']])
 
 #### Single Coder/wide dataset ####
 
@@ -248,7 +248,7 @@ r01_micro_ps <- merge(r01_micro_ps, r01_micro_1coder[r01_micro_1coder$ps == 4, c
 names(r01_micro_ps)[c(72:94)] <- sapply(ps_names, function(x) paste0('ps4_', x), USE.NAMES = FALSE)
 
 
-r01_demo_anthro <- merge(r01_demo[c(1, 4, 8:10, 12, 19:20, 14:16, 337:338)], r01_anthro[c(1, 119, 570)], by = 'sub', all = TRUE)
+r01_demo_anthro <- merge(r01_demo[c(1, 4, 8:10, 12, 19:20, 14:16, 337:338)], r01_anthro[c(1, 129, 570)], by = 'sub', all = TRUE)
 r01_micro_ps <- merge(r01_demo_anthro, r01_micro_ps[c(1, 3:94)], by = 'sub', all.x = FALSE, all.y = TRUE)
 
 # b) add microstructure video notes ####
