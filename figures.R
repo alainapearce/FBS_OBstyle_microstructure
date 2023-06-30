@@ -28,6 +28,26 @@
 ## Behavior across PS models ####
 # ps_beh_models_fig <- bar_graph.se(ps_beh_betas$ps_beh_betas, er = ps_beh_se$ps_beh_se, xlab = 'Behavior', ylab = 'Standardized Coefficients for Portion Size', ymax = 0.6, ymin = -0.6, group = 0)
 
+## intake across PS ####
+rownames_intake <- c('Bites', 'Sips', 'Bite Size, g', 'Prop Active', 'Meal Duration', 'Eat Rate, g')
+ps_g_betas <- rbind(summary(ps1_g_cov_stdmod)$coefficients[6:11], summary(ps2_g_cov_stdmod)$coefficients[6:11], summary(ps3_g_cov_stdmod)$coefficients[6:11], summary(ps4_g_cov_stdmod)$coefficients[6:11])
+
+ps_g_se <- rbind(summary(ps1_g_cov_stdmod)$coefficients[6:11, 2], summary(ps2_g_cov_stdmod)$coefficients[6:11, 2], summary(ps3_g_cov_stdmod)$coefficients[6:11, 2], summary(ps4_g_cov_stdmod)$coefficients[6:11, 2])
+
+ps_kcal_betas <-rbind(summary(ps1_kcal_cov_stdmod)$coefficients[6:11], summary(ps2_kcal_cov_stdmod)$coefficients[6:11], summary(ps3_kcal_cov_stdmod)$coefficients[6:11], summary(ps4_kcal_cov_stdmod)$coefficients[6:11])
+
+ps_kcal_se <-rbind(summary(ps1_kcal_cov_stdmod)$coefficients[6:11, 2], summary(ps2_kcal_cov_stdmod)$coefficients[6:11, 2], summary(ps3_kcal_cov_stdmod)$coefficients[6:11, 2], summary(ps4_kcal_cov_stdmod)$coefficients[6:11, 2])
+
+
+psxbeh_intake <- data.frame(c(rep(1, 6), rep(2, 6), rep(3, 6), rep(4, 6)), rep(rownames_intake, 4))
+names(psxbeh_intake) <- c('Portion', 'Behavior')
+psxbeh_intake$Portion <- as.factor(psxbeh_intake$Portion)
+psxbeh_intake$Behavior <- as.factor(psxbeh_intake$Behavior)
+
+ps_g_model_fig <- bar_graph.se(means = ps_g_betas, er = ps_g_se, xlab = 'Behavior', ylab = 'Standardized Coefficients for Inkate, g', ymax = 1, ymin = -0.2, group = psxbeh_intake$Portion)
+
+ps_kcal_model_fig <- bar_graph.se(means = ps_kcal_betas, er = ps_kcal_se, xlab = 'Behavior', ylab = 'Standardized Coefficients for Inkate, kcal', ymax = 1, ymin = -0.2, group = psxbeh_intake$Portion)
+
 ## BMI across PS ####
 ps_bmi_betas <- rbind(ps1_bmi_betas$ps1_bmi_betas, ps2_bmi_betas$ps2_bmi_betas, ps3_bmi_betas$ps3_bmi_betas, ps4_bmi_betas$ps4_bmi_betas)
 

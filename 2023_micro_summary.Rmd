@@ -324,6 +324,20 @@ kable(round(eat_rate_active_kcal_sum$coefficients, 3), caption = 'kcal/min (acti
 
 ## Association with Intake
 
+\FloatBarrier
+
+```{r obpattern_g_intake_plot, echo=FALSE, include = TRUE}
+bar_graph.se(means = ps_g_betas, er = ps_g_se, xlab = 'Behavior', ylab = 'Standardized Coefficients for Inkate, g', ymax = 1, ymin = -0.2, group = psxbeh_intake$Portion)
+```
+
+\FloatBarrier
+
+```{r obpattern_kcal_intake_plot, echo=FALSE, include = TRUE}
+bar_graph.se(means = ps_kcal_betas, er = ps_kcal_se, xlab = 'Behavior', ylab = 'Standardized Coefficients for Inkate, kcal', ymax = 1, ymin = -0.2, group = psxbeh_intake$Portion)
+```
+
+\FloatBarrier
+
 ### Portion Size 1
 
 ```{r ps1_obpattern_g_intake, echo=FALSE, results='asis'}
