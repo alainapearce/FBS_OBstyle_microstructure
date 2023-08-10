@@ -44,6 +44,24 @@ demo_tab <-
     missing = "ifany",
     digits = all_continuous() ~ 1)
 
+demo_tab_sex <-
+  tbl_summary(
+    data = micro_demo_data,
+    by = sex,
+    value = list(age_yr ~ "Age, yr",  bmi_percentile ~ "BMI %tile", dxa_est_vat_volume ~ "VAT, cm3", fmi ~ 'Fat Mass Index', ethnicity ~ "Ethnicity", race ~ "Race", income ~ "Income",  mom_ed ~ "Mother's Education", dad_ed ~ "Father's Education"),
+    label = list(age_yr ~ "Age, yr",  bmi_percentile ~ "BMI %tile", dxa_est_vat_volume ~ "VAT, cm3", fmi ~ 'Fat Mass Index', ethnicity ~ "Ethnicity", race ~ "Race", income ~ "Income",  mom_ed ~ "Mother's Education", dad_ed ~ "Father's Education"),
+    type = list(age_yr ~ "continuous", bmi_percentile ~ "continuous", dxa_est_vat_volume ~ "continuous", fmi ~ 'continuous', ethnicity ~ "categorical", race ~ "categorical", income ~ "categorical", mom_ed ~ "categorical", dad_ed ~ "categorical"),
+    statistic = all_continuous() ~ c("{mean} ({sd})"),
+    missing = "ifany",
+    digits = all_continuous() ~ 1)%>%
+  add_p()
+
+demo_merge_tab <-
+  tbl_merge(
+    tbls = list(demo_tab, demo_tab_sex),
+    tab_spanner = c("**Overall**", "**Sex**")
+  )
+
 ## intake table
 micro_intake_data <- r01_micro[c(2, 28, 33, 30:31, 34)]
 intake_tab <-
@@ -57,11 +75,59 @@ intake_tab <-
     missing = "ifany",
     digits = all_continuous() ~ 1)
 
+micro_intake_data_boy <- r01_micro[r01_micro[['sex']] == 'Male', c(2, 28, 33, 30:31, 34)]
+intake_tab_boy <-
+  tbl_summary(
+    data = micro_intake_data_boy,
+    by = ps,
+    value = list(freddy_pre_meal ~ "Pre-Meal Fullness", avg_vas ~ "Avg. Liking",  total_g ~ "Intake, g", total_kcal ~ "Intake, kcal", ps_plate_cleaner ~ "95% consumed"),
+    label = list(freddy_pre_meal ~ "Pre-Meal Fullness", avg_vas ~ "Avg. Liking",  total_g ~ "Intake, g", total_kcal ~ "Intake, kcal", ps_plate_cleaner ~ "95% consumed"),
+    type = list(freddy_pre_meal ~ "continuous", avg_vas ~ "continuous",  total_g ~ "continuous", total_kcal ~ "continuous", ps_plate_cleaner ~ "categorical"),
+    statistic = all_continuous() ~ c("{mean} ({sd})"),
+    missing = "ifany",
+    digits = all_continuous() ~ 1)
+
+micro_intake_data_girl <- r01_micro[r01_micro[['sex']] == 'Female', c(2, 28, 33, 30:31, 34)]
+intake_tab_girl <-
+  tbl_summary(
+    data = micro_intake_data_girl,
+    by = ps,
+    value = list(freddy_pre_meal ~ "Pre-Meal Fullness", avg_vas ~ "Avg. Liking",  total_g ~ "Intake, g", total_kcal ~ "Intake, kcal", ps_plate_cleaner ~ "95% consumed"),
+    label = list(freddy_pre_meal ~ "Pre-Meal Fullness", avg_vas ~ "Avg. Liking",  total_g ~ "Intake, g", total_kcal ~ "Intake, kcal", ps_plate_cleaner ~ "95% consumed"),
+    type = list(freddy_pre_meal ~ "continuous", avg_vas ~ "continuous",  total_g ~ "continuous", total_kcal ~ "continuous", ps_plate_cleaner ~ "categorical"),
+    statistic = all_continuous() ~ c("{mean} ({sd})"),
+    missing = "ifany",
+    digits = all_continuous() ~ 1)
+
 ## microstructure tables - summary
 micro_beh_data <- r01_micro[c(2, 38:41, 43:47, 50:56)]
 micro_beh_tab <-
   tbl_summary(
     data = micro_beh_data,
+    by = ps,
+    value = list(nbites_c1 ~ 'bites', nsips_c1 ~ 'sips', total_active_eating_c1 ~ 'active eating, min', bite_latency_c1 ~ '1st bite latency, min', meal_duration_c1 ~ 'meal duration, min' , bite_rate_c1 ~ 'bites/min', bite_rate_active_c1 ~ 'bite/min (active)', sip_rate_c1 ~ 'sips/min', sip_rate_active_c1 ~ 'sips/min (active)', bite_size_g_c1 ~ 'g/bite', bite_size_kcal_c1 ~ 'kcal/bite', eat_rate_g_c1 ~ 'g/min', eat_rate_kcal_c1 ~ 'kcal/min', eat_rate_active_g_c1 ~ 'g/min (active)', eat_rate_active_kcal_c1 ~ 'kcal/min (active)', prop_active_c1 ~ 'active eat/meal duration, min'),
+    label = list(nbites_c1 ~ 'bites', nsips_c1 ~ 'sips', total_active_eating_c1 ~ 'active eating, min', bite_latency_c1 ~ '1st bite latency, min', meal_duration_c1 ~ 'meal duration, min' , bite_rate_c1 ~ 'bites/min', bite_rate_active_c1 ~ 'bite/min (active)', sip_rate_c1 ~ 'sips/min', sip_rate_active_c1 ~ 'sips/min (active)', bite_size_g_c1 ~ 'g/bite', bite_size_kcal_c1 ~ 'kcal/bite', eat_rate_g_c1 ~ 'g/min', eat_rate_kcal_c1 ~ 'kcal/min', eat_rate_active_g_c1 ~ 'g/min (active)', eat_rate_active_kcal_c1 ~ 'kcal/min (active)', prop_active_c1 ~ 'active eat/meal duration, min'),
+    type = list(nbites_c1 ~ 'continuous', nsips_c1 ~ 'continuous', total_active_eating_c1 ~ 'continuous', bite_latency_c1 ~ 'continuous', meal_duration_c1 ~ 'continuous' , bite_rate_c1 ~ 'continuous', bite_rate_active_c1 ~ 'continuous', sip_rate_c1 ~ 'continuous', sip_rate_active_c1 ~ 'continuous', bite_size_g_c1 ~ 'continuous', bite_size_kcal_c1 ~ 'continuous', eat_rate_g_c1 ~ 'continuous', eat_rate_kcal_c1 ~ 'continuous', eat_rate_active_g_c1 ~ 'continuous', eat_rate_active_kcal_c1 ~ 'continuous', prop_active_c1 ~ 'continuous'),
+    statistic = all_continuous() ~ c("{mean} ({sd})"),
+    #missing = "no",
+    digits = all_continuous() ~ 3)
+
+micro_beh_data_boy <- r01_micro[r01_micro[['sex']] == 'Male', c(2, 38:41, 43:47, 50:56)]
+micro_beh_tab_boy <-
+  tbl_summary(
+    data = micro_beh_data_boy,
+    by = ps,
+    value = list(nbites_c1 ~ 'bites', nsips_c1 ~ 'sips', total_active_eating_c1 ~ 'active eating, min', bite_latency_c1 ~ '1st bite latency, min', meal_duration_c1 ~ 'meal duration, min' , bite_rate_c1 ~ 'bites/min', bite_rate_active_c1 ~ 'bite/min (active)', sip_rate_c1 ~ 'sips/min', sip_rate_active_c1 ~ 'sips/min (active)', bite_size_g_c1 ~ 'g/bite', bite_size_kcal_c1 ~ 'kcal/bite', eat_rate_g_c1 ~ 'g/min', eat_rate_kcal_c1 ~ 'kcal/min', eat_rate_active_g_c1 ~ 'g/min (active)', eat_rate_active_kcal_c1 ~ 'kcal/min (active)', prop_active_c1 ~ 'active eat/meal duration, min'),
+    label = list(nbites_c1 ~ 'bites', nsips_c1 ~ 'sips', total_active_eating_c1 ~ 'active eating, min', bite_latency_c1 ~ '1st bite latency, min', meal_duration_c1 ~ 'meal duration, min' , bite_rate_c1 ~ 'bites/min', bite_rate_active_c1 ~ 'bite/min (active)', sip_rate_c1 ~ 'sips/min', sip_rate_active_c1 ~ 'sips/min (active)', bite_size_g_c1 ~ 'g/bite', bite_size_kcal_c1 ~ 'kcal/bite', eat_rate_g_c1 ~ 'g/min', eat_rate_kcal_c1 ~ 'kcal/min', eat_rate_active_g_c1 ~ 'g/min (active)', eat_rate_active_kcal_c1 ~ 'kcal/min (active)', prop_active_c1 ~ 'active eat/meal duration, min'),
+    type = list(nbites_c1 ~ 'continuous', nsips_c1 ~ 'continuous', total_active_eating_c1 ~ 'continuous', bite_latency_c1 ~ 'continuous', meal_duration_c1 ~ 'continuous' , bite_rate_c1 ~ 'continuous', bite_rate_active_c1 ~ 'continuous', sip_rate_c1 ~ 'continuous', sip_rate_active_c1 ~ 'continuous', bite_size_g_c1 ~ 'continuous', bite_size_kcal_c1 ~ 'continuous', eat_rate_g_c1 ~ 'continuous', eat_rate_kcal_c1 ~ 'continuous', eat_rate_active_g_c1 ~ 'continuous', eat_rate_active_kcal_c1 ~ 'continuous', prop_active_c1 ~ 'continuous'),
+    statistic = all_continuous() ~ c("{mean} ({sd})"),
+    #missing = "no",
+    digits = all_continuous() ~ 3)
+
+micro_beh_data_girl <- r01_micro[r01_micro[['sex']] == 'Female', c(2, 38:41, 43:47, 50:56)]
+micro_beh_tab_girl <-
+  tbl_summary(
+    data = micro_beh_data_girl,
     by = ps,
     value = list(nbites_c1 ~ 'bites', nsips_c1 ~ 'sips', total_active_eating_c1 ~ 'active eating, min', bite_latency_c1 ~ '1st bite latency, min', meal_duration_c1 ~ 'meal duration, min' , bite_rate_c1 ~ 'bites/min', bite_rate_active_c1 ~ 'bite/min (active)', sip_rate_c1 ~ 'sips/min', sip_rate_active_c1 ~ 'sips/min (active)', bite_size_g_c1 ~ 'g/bite', bite_size_kcal_c1 ~ 'kcal/bite', eat_rate_g_c1 ~ 'g/min', eat_rate_kcal_c1 ~ 'kcal/min', eat_rate_active_g_c1 ~ 'g/min (active)', eat_rate_active_kcal_c1 ~ 'kcal/min (active)', prop_active_c1 ~ 'active eat/meal duration, min'),
     label = list(nbites_c1 ~ 'bites', nsips_c1 ~ 'sips', total_active_eating_c1 ~ 'active eating, min', bite_latency_c1 ~ '1st bite latency, min', meal_duration_c1 ~ 'meal duration, min' , bite_rate_c1 ~ 'bites/min', bite_rate_active_c1 ~ 'bite/min (active)', sip_rate_c1 ~ 'sips/min', sip_rate_active_c1 ~ 'sips/min (active)', bite_size_g_c1 ~ 'g/bite', bite_size_kcal_c1 ~ 'kcal/bite', eat_rate_g_c1 ~ 'g/min', eat_rate_kcal_c1 ~ 'kcal/min', eat_rate_active_g_c1 ~ 'g/min (active)', eat_rate_active_kcal_c1 ~ 'kcal/min (active)', prop_active_c1 ~ 'active eat/meal duration, min'),

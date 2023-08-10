@@ -88,16 +88,8 @@ source('tables.R')
 
 \FloatBarrier
 
-```{r demo_tab, echo=FALSE, results='asis'}
-as_kable_extra(demo_tab, caption = 'Demographics', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
-  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
-```
-
-\FloatBarrier
-
-
 ```{r demo_tests, echo=FALSE, results='asis'}
-as_kable_extra(demo_tab, caption = 'Demographics', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+as_kable_extra(demo_merge_tab, caption = 'Demographics', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
   kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
 ```
 
@@ -111,6 +103,16 @@ as_kable_extra(intake_tab, caption = 'Meal Intake', format = "latex", booktabs =
   kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
 ```
 
+```{r meal_tab_boy, echo=FALSE, results='asis'}
+as_kable_extra(intake_tab_boy, caption = 'Boys: Meal Intake', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+```{r meal_tab_girl, echo=FALSE, results='asis'}
+as_kable_extra(intake_tab_girl, caption = 'Girls: Meal Intake', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
 \FloatBarrier
 
 # Microstructure
@@ -120,6 +122,25 @@ as_kable_extra(intake_tab, caption = 'Meal Intake', format = "latex", booktabs =
 \FloatBarrier
 ```{r miro_beh_tab, echo=FALSE, results='asis'}
 as_kable_extra(micro_beh_tab, caption = 'Microstructure Behaviors by Portion Size Meal', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+```{r miro_beh_tab_boy, echo=FALSE, results='asis'}
+as_kable_extra(micro_beh_tab_boy, caption = 'Boys: Microstructure Behaviors by Portion Size Meal', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+
+\FloatBarrier
+```{r miro_beh_tab_girl, echo=FALSE, results='asis'}
+as_kable_extra(micro_beh_tab_girl, caption = 'Girls: Microstructure Behaviors by Portion Size Meal', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+```{r ps_sex_tab, echo=FALSE, results='asis'}
+kable(ps_sex_tab, caption = 'Sex differences: t-tests', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
   kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
 ```
 

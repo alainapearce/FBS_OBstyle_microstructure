@@ -267,7 +267,7 @@ r01_micro_ps <- merge(r01_micro_ps, r01_intake[c(1, 38, 47)], by = 'sub', all.x 
 r01_micro_ps <- r01_micro_ps[c(1:15, 108:109, 121:122, 110:120, 16:107)]
 
 # c) merge notes with long ps data ####
-r01_micro <- merge(r01_micro, r01_micro_ps[c(1,16:17)], by = 'sub', all = TRUE)
+r01_micro <- merge(r01_micro, r01_micro_ps[c(1,15:17)], by = 'sub', all = TRUE)
 r01_micro <- r01_micro[c(1:2, 28, 92:93, 9:11, 13, 15:17, 57:58, 22:23, 81:91, 59:66, 29:42, 67:68, 71:72, 75:76, 79, 43:56, 69:70, 73:74, 77:78, 80)]
 
 ## 3- remove participants ####
