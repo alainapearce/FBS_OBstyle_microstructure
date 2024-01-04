@@ -63,44 +63,44 @@ demo_merge_tab <-
   )
 
 ## intake table
-micro_intake_data <- r01_micro[c(2, 28, 33, 30:31, 34)]
-intake_tab <-
-  tbl_summary(
+micro_intake_data <- r01_micro[c(2, 29, 31:32, 34:39)]
+intake_tab <- tbl_summary(
     data = micro_intake_data,
     by = ps,
-    value = list(freddy_pre_meal ~ "Pre-Meal Fullness", avg_vas ~ "Avg. Liking",  total_g ~ "Intake, g", total_kcal ~ "Intake, kcal", ps_plate_cleaner ~ "95% consumed"),
-    label = list(freddy_pre_meal ~ "Pre-Meal Fullness", avg_vas ~ "Avg. Liking",  total_g ~ "Intake, g", total_kcal ~ "Intake, kcal", ps_plate_cleaner ~ "95% consumed"),
-    type = list(freddy_pre_meal ~ "continuous", avg_vas ~ "continuous",  total_g ~ "continuous", total_kcal ~ "continuous", ps_plate_cleaner ~ "categorical"),
+    value = list(freddy_pre_meal ~ "Pre-Meal Fullness", vas_mac_cheese ~ "Liking - Maccaroni", vas_chkn_nug ~ "Liking - Chicken", vas_grape ~ "Liking - Grapes", vas_broc ~ "Liking - Broccoli", avg_vas ~ "Avg. Liking", total_g ~ "Intake, g", total_kcal ~ "Intake, kcal", ps_plate_cleaner ~ "95% consumed"),
+    label = list(freddy_pre_meal ~ "Pre-Meal Fullness", vas_mac_cheese ~ "Liking - Maccaroni", vas_chkn_nug ~ "Liking - Chicken", vas_grape ~ "Liking - Grapes", vas_broc ~ "Liking - Broccoli", avg_vas ~ "Avg. Liking",  total_g ~ "Intake, g", total_kcal ~ "Intake, kcal", ps_plate_cleaner ~ "95% consumed"),
+    type = list(freddy_pre_meal ~ "continuous", vas_chkn_nug ~ "continuous", vas_grape ~ "continuous", vas_broc ~ "continuous", avg_vas ~ "continuous",  total_g ~ "continuous", total_kcal ~ "continuous", ps_plate_cleaner ~ "categorical"),
     statistic = all_continuous() ~ c("{mean} ({sd})"),
     missing = "ifany",
     digits = all_continuous() ~ 1)
 
-micro_intake_data_boy <- r01_micro[r01_micro[['sex']] == 'Male', c(2, 28, 33, 30:31, 34)]
+micro_intake_data_boy <- r01_micro[r01_micro[['sex']] == 'Male', c(2, 29, 31:32, 34:39)]
 intake_tab_boy <-
   tbl_summary(
     data = micro_intake_data_boy,
     by = ps,
-    value = list(freddy_pre_meal ~ "Pre-Meal Fullness", avg_vas ~ "Avg. Liking",  total_g ~ "Intake, g", total_kcal ~ "Intake, kcal", ps_plate_cleaner ~ "95% consumed"),
-    label = list(freddy_pre_meal ~ "Pre-Meal Fullness", avg_vas ~ "Avg. Liking",  total_g ~ "Intake, g", total_kcal ~ "Intake, kcal", ps_plate_cleaner ~ "95% consumed"),
-    type = list(freddy_pre_meal ~ "continuous", avg_vas ~ "continuous",  total_g ~ "continuous", total_kcal ~ "continuous", ps_plate_cleaner ~ "categorical"),
+    value = list(freddy_pre_meal ~ "Pre-Meal Fullness", vas_mac_cheese ~ "Liking - Maccaroni", vas_chkn_nug ~ "Liking - Chicken", vas_grape ~ "Liking - Grapes", vas_broc ~ "Liking - Broccoli", avg_vas ~ "Avg. Liking",  total_g ~ "Intake, g", total_kcal ~ "Intake, kcal", ps_plate_cleaner ~ "95% consumed"),
+    label = list(freddy_pre_meal ~ "Pre-Meal Fullness", vas_mac_cheese ~ "Liking - Maccaroni", vas_chkn_nug ~ "Liking - Chicken", vas_grape ~ "Liking - Grapes", vas_broc ~ "Liking - Broccoli", avg_vas ~ "Avg. Liking",  total_g ~ "Intake, g", total_kcal ~ "Intake, kcal", ps_plate_cleaner ~ "95% consumed"),
+    type = list(freddy_pre_meal ~ "continuous", vas_chkn_nug ~ "continuous", vas_grape ~ "continuous", vas_broc ~ "continuous", avg_vas ~ "continuous",  total_g ~ "continuous", total_kcal ~ "continuous", ps_plate_cleaner ~ "categorical"),
     statistic = all_continuous() ~ c("{mean} ({sd})"),
     missing = "ifany",
     digits = all_continuous() ~ 1)
 
-micro_intake_data_girl <- r01_micro[r01_micro[['sex']] == 'Female', c(2, 28, 33, 30:31, 34)]
+micro_intake_data_girl <- r01_micro[r01_micro[['sex']] == 'Female', c(2, 29, 31:32, 34:39)]
 intake_tab_girl <-
   tbl_summary(
     data = micro_intake_data_girl,
     by = ps,
-    value = list(freddy_pre_meal ~ "Pre-Meal Fullness", avg_vas ~ "Avg. Liking",  total_g ~ "Intake, g", total_kcal ~ "Intake, kcal", ps_plate_cleaner ~ "95% consumed"),
-    label = list(freddy_pre_meal ~ "Pre-Meal Fullness", avg_vas ~ "Avg. Liking",  total_g ~ "Intake, g", total_kcal ~ "Intake, kcal", ps_plate_cleaner ~ "95% consumed"),
-    type = list(freddy_pre_meal ~ "continuous", avg_vas ~ "continuous",  total_g ~ "continuous", total_kcal ~ "continuous", ps_plate_cleaner ~ "categorical"),
+    value = list(freddy_pre_meal ~ "Pre-Meal Fullness", vas_mac_cheese ~ "Liking - Maccaroni", vas_chkn_nug ~ "Liking - Chicken", vas_grape ~ "Liking - Grapes", vas_broc ~ "Liking - Broccoli", avg_vas ~ "Avg. Liking",  total_g ~ "Intake, g", total_kcal ~ "Intake, kcal", ps_plate_cleaner ~ "95% consumed"),
+    label = list(freddy_pre_meal ~ "Pre-Meal Fullness", vas_mac_cheese ~ "Liking - Maccaroni", vas_chkn_nug ~ "Liking - Chicken", vas_grape ~ "Liking - Grapes", vas_broc ~ "Liking - Broccoli", avg_vas ~ "Avg. Liking",  total_g ~ "Intake, g", total_kcal ~ "Intake, kcal", ps_plate_cleaner ~ "95% consumed"),
+    type = list(freddy_pre_meal ~ "continuous", vas_mac_cheese ~ "continuous", vas_chkn_nug ~ "continuous", vas_grape ~ "continuous", vas_broc ~ "continuous", avg_vas ~ "continuous",  total_g ~ "continuous", total_kcal ~ "continuous", ps_plate_cleaner ~ "categorical"),
     statistic = all_continuous() ~ c("{mean} ({sd})"),
     missing = "ifany",
     digits = all_continuous() ~ 1)
 
 ## microstructure tables - summary
-micro_beh_data <- r01_micro[c(2, 38:41, 43:47, 50:56)]
+micro_beh_data <- r01_micro[c(2, 45:48, 50:54, 57:63)]
+
 micro_beh_tab <-
   tbl_summary(
     data = micro_beh_data,
@@ -112,7 +112,7 @@ micro_beh_tab <-
     #missing = "no",
     digits = all_continuous() ~ 3)
 
-micro_beh_data_boy <- r01_micro[r01_micro[['sex']] == 'Male', c(2, 38:41, 43:47, 50:56)]
+micro_beh_data_boy <- r01_micro[r01_micro[['sex']] == 'Male', c(2, 45:48, 50:54, 57:63)]
 micro_beh_tab_boy <-
   tbl_summary(
     data = micro_beh_data_boy,
@@ -124,7 +124,7 @@ micro_beh_tab_boy <-
     #missing = "no",
     digits = all_continuous() ~ 3)
 
-micro_beh_data_girl <- r01_micro[r01_micro[['sex']] == 'Female', c(2, 38:41, 43:47, 50:56)]
+micro_beh_data_girl <- r01_micro[r01_micro[['sex']] == 'Female', c(2, 45:48, 50:54, 57:63)]
 micro_beh_tab_girl <-
   tbl_summary(
     data = micro_beh_data_girl,

@@ -67,11 +67,13 @@ library(lmerTest)
 library(rmcorr)
 library(ggplot2)
 library(ggpubr)
+library(car)
+library(klaR)
+library(lubridate)
 
 library(gtsummary)
 theme_gtsummary_compact()
- 
-library(car)
+
 ```
 
 ```{r load_scripts, echo=FALSE, results='asis'}
@@ -1103,6 +1105,135 @@ kable(ps4_fmi_rate_kcal_cov_sum$coefficients, "latex",  digits = 3, caption = "P
 
 ```{r ps4_fmi_adj_pvalues, echo=FALSE, results='asis'}
 kable(ps4_fmi_adj, "latex",  digits = 3, caption = "Portion Size 4 - FDR Adjusted p-values for the effect of Fat Mass Index on Microstructure", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+# Supplemental Materials - Extra Covarys: Association with Intake
+
+### Portion Size 1
+
+```{r ps1_supcov_obpattern_g_intake, echo=FALSE, results='asis'}
+kable(summary(ps1_g_supcov_stdmod)$coefficients, "latex",  digits = 3, caption = "Supplemental Covars - Portion Size 1 - Standardized Coefficitens for Association Between Eating Behaivors and Intake (g) (adjusted for age, sex, liking, and fullness)", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r ps1_supcov_obpattern_g_intake_rwa, echo=FALSE, results='asis'}
+kable(ps1_g_suprwa$result, "latex",  digits = 3, caption = "Supplemental Covars - Portion Size 1 - Relative Weighting Analysis, grams", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+
+```{r ps1_supcov_obpattern_kcal_intake, echo=FALSE, results='asis'}
+kable(summary(ps1_kcal_supcov_stdmod)$coefficients, "latex",  digits = 3, caption = "Supplemental Covars - Portion Size 1 - Standardized Coefficitens for Association Between Eating Behaivors and Intake (kcal) (adjusted for age, sex, liking, and fullness)", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r ps1_supcov_obpattern_kcal_intake_rwa, echo=FALSE, results='asis'}
+kable(ps1_kcal_suprwa$result, "latex",  digits = 3, caption = "Supplemental Covars - Portion Size 1 - Relative Weighting Analysis, kcal", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+### Portion Size 2
+
+```{r ps2_supcov_obpattern_g_intake, echo=FALSE, results='asis'}
+kable(summary(ps2_g_supcov_stdmod)$coefficients, "latex",  digits = 3, caption = "Supplemental Covars - Portion Size 2 - Standardized Coefficitens for Association Between Eating Behaivors and Intake (g) (adjusted for age, sex, liking, and fullness)", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r ps2_supcov_obpattern_g_intake_rwa, echo=FALSE, results='asis'}
+kable(ps2_g_suprwa$result, "latex",  digits = 3, caption = "Supplemental Covars - Portion Size 2 - Relative Weighting Analysis, grams", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+
+```{r ps2_supcov_obpattern_kcal_intake, echo=FALSE, results='asis'}
+kable(summary(ps2_kcal_supcov_stdmod)$coefficients, "latex",  digits = 3, caption = "Supplemental Covars - Portion Size 2 - Standardized Coefficitens for Association Between Eating Behaivors and Intake (kcal) (adjusted for age, sex, liking, and fullness)", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r ps2_supcov_obpattern_kcal_intake_rwa, echo=FALSE, results='asis'}
+kable(ps2_kcal_suprwa$result, "latex",  digits = 3, caption = "Supplemental Covars - Portion Size 2 - Relative Weighting Analysis, kcal", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+### Portion Size 3
+
+```{r ps3_supcov_obpattern_g_intake, echo=FALSE, results='asis'}
+kable(summary(ps3_g_supcov_stdmod)$coefficients, "latex",  digits = 3, caption = "Supplemental Covars - Portion Size 3 - Standardized Coefficitens for Association Between Eating Behaivors and Intake (g) (adjusted for age, sex, liking, and fullness)", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r ps3_supcov_obpattern_g_intake_rwa, echo=FALSE, results='asis'}
+kable(ps3_g_suprwa$result, "latex",  digits = 3, caption = "Supplemental Covars - Portion Size 3 - Relative Weighting Analysis, grams", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+
+```{r ps3_supcov_obpattern_kcal_intake, echo=FALSE, results='asis'}
+kable(summary(ps3_kcal_supcov_stdmod)$coefficients, "latex",  digits = 3, caption = "Supplemental Covars - Portion Size 3 - Standardized Coefficitens for Association Between Eating Behaivors and Intake (kcal) (adjusted for age, sex, liking, and fullness)", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+
+```{r ps3_supcov_obpattern_kcal_intake_rwa, echo=FALSE, results='asis'}
+kable(ps3_kcal_suprwa$result, "latex",  digits = 3, caption = "Supplemental Covars - Portion Size 3 - Relative Weighting Analysis, kcal", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+### Portion Size 4
+
+```{r ps4_supcov_obpattern_g_intake, echo=FALSE, results='asis'}
+kable(summary(ps4_g_supcov_stdmod)$coefficients, "latex",  digits = 3, caption = "Supplemental Covars - Portion Size 4 - Standardized Coefficitens for Association Between Eating Behaivors and Intake (g) (adjusted for age, sex, liking, and fullness)", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+
+```{r ps4_supcov_obpattern_g_intake_rwa, echo=FALSE, results='asis'}
+kable(ps4_g_suprwa$result, "latex",  digits = 3, caption = "Supplemental Covars - Portion Size 4 - Relative Weighting Analysis, grams", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+
+```{r ps4_supcov_obpattern_kcal_intake, echo=FALSE, results='asis'}
+kable(summary(ps4_kcal_supcov_stdmod)$coefficients, "latex",  digits = 3, caption = "Supplemental Covars - Portion Size 4 - Standardized Coefficitens for Association Between Eating Behaivors and Intake (kcal) (adjusted for age, sex, liking, and fullness)", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+
+```{r ps4_supcov_obpattern_kcal_intake_rwa, echo=FALSE, results='asis'}
+kable(ps4_kcal_suprwa$result, "latex",  digits = 3, caption = "Supplemental Covars - Portion Size 4 - Relative Weighting Analysis, kcal", booktabs=TRUE) %>%
   kable_styling(latex_options = c("hold_position", "repeat_header"))
 ```
 
