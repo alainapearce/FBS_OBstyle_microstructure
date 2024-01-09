@@ -1110,6 +1110,39 @@ kable(ps4_fmi_adj, "latex",  digits = 3, caption = "Portion Size 4 - FDR Adjuste
 
 \FloatBarrier
 
+# Supplemental Materials - No Plate Cleaners
+
+### Portion Size 1
+
+```{r ps1_cov_plateclean_obpattern_g_intake, echo=FALSE, results='asis'}
+kable(summary(ps1_g_cov_plateclean_stdmod)$coefficients, "latex",  digits = 3, caption = "Supplemental No Plate Cleaners - Portion Size 1 - Standardized Coefficitens for Association Between Eating Behaivors and Intake (g) (adjusted for age, sex, liking, and fullness)", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r ps1_cov_plateclean_obpattern_g_intake_rwa, echo=FALSE, results='asis'}
+kable(ps1_g_plateclean_rwa$result, "latex",  digits = 3, caption = "Supplemental No Plate Cleaners - Portion Size 1 - Relative Weighting Analysis, grams", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+
+```{r ps1_cov_plateclean_obpattern_kcal_intake, echo=FALSE, results='asis'}
+kable(summary(ps1_kcal_cov_plateclean_stdmod)$coefficients, "latex",  digits = 3, caption = "Supplemental No Plate Cleaners - Portion Size 1 - Standardized Coefficitens for Association Between Eating Behaivors and Intake (kcal) (adjusted for age, sex, liking, and fullness)", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r ps1_cov_plateclean_obpattern_kcal_intake_rwa, echo=FALSE, results='asis'}
+kable(ps1_kcal_plateclean_rwa$result, "latex",  digits = 3, caption = "Supplemental No Plate Cleaners - Portion Size 1 - Relative Weighting Analysis, kcal", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
 # Supplemental Materials - Extra Covarys: Association with Intake
 
 ### Portion Size 1

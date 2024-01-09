@@ -626,7 +626,14 @@ r01_micro_ps$ps2_book_num <- ifelse(r01_micro_ps$ps2_book == 'researcher', 0, 1)
 r01_micro_ps$ps3_book_num <- ifelse(r01_micro_ps$ps3_book == 'researcher', 0, 1)
 r01_micro_ps$ps4_book_num <- ifelse(r01_micro_ps$ps4_book == 'researcher', 0, 1)
 
+## portion 1  - intake - plate cleaners ####
+ps1_g_cov_plateclean_stdmod <- lm(scale(ps1_total_g) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(fmi) + scale(ps1_avg_vas) + scale(ps1_nbites) + scale(ps1_nsips) + scale(ps1_bite_size_g) + scale(ps1_prop_active) + scale(ps1_meal_duration) + scale(ps1_eat_rate_g), data = r01_micro_ps[r01_micro_ps$ps1_plate_cleaner != 1, ])
 
+ps1_g_plateclean_rwa <- rwa(df = r01_micro_ps[r01_micro_ps$ps1_plate_cleaner != 1, ], outcome = 'ps1_total_g', predictors = c('ps1_freddy_pre_meal', 'sex_num', 'age_yr', 'fmi', 'ps1_avg_vas', 'ps1_nbites', 'ps1_nsips', 'ps1_bite_size_g', 'ps1_prop_active', 'ps1_meal_duration', 'ps1_eat_rate_g'))
+
+ps1_kcal_cov_plateclean_stdmod <- lm(scale(ps1_total_kcal) ~ scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(fmi) + scale(ps1_avg_vas) + scale(ps1_nbites) + scale(ps1_nsips) + scale(ps1_bite_size_kcal) + scale(ps1_prop_active) + scale(ps1_meal_duration) + scale(ps1_eat_rate_kcal), data = r01_micro_ps[r01_micro_ps$ps1_plate_cleaner != 1, ])
+
+ps1_kcal_plateclean_rwa <- rwa(df = r01_micro_ps[r01_micro_ps$ps1_plate_cleaner != 1, ], outcome = 'ps1_total_kcal', predictors = c('ps1_freddy_pre_meal', 'sex_num', 'age_yr', 'fmi', 'ps1_avg_vas', 'ps1_nbites', 'ps1_nsips', 'ps1_bite_size_kcal', 'ps1_prop_active', 'ps1_meal_duration', 'ps1_eat_rate_kcal'))
 ## portion 1  - intake ####
 ps1_g_supcov_stdmod <- lm(scale(ps1_total_g) ~ ps1_time_of_day + ps1_book + scale(ps1_freddy_pre_meal) + sex + scale(age_yr) + scale(fmi) + scale(ps1_avg_vas) + scale(ps1_nbites) + scale(ps1_nsips) + scale(ps1_bite_size_g) + scale(ps1_prop_active) + scale(ps1_meal_duration) + scale(ps1_eat_rate_g), data = r01_micro_ps)
 
