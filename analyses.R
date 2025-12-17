@@ -28,6 +28,8 @@
 # source('setup.R')
 
 #### set up ####
+r01_micro_ps <- read.csv('data/micro_ps_compiled.csv')
+r01_micro <- read.csv('data/micro_compiled.csv')
 
 # demographics check ####
 

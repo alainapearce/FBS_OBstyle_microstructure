@@ -25,6 +25,10 @@
 
 # source('setup.R')
 
+#### set up ####
+r01_micro_ps <- read.csv('data/micro_ps_compiled.csv')
+r01_micro <- read.csv('data/micro_compiled.csv')
+
 ## Behavior across PS models ####
 # ps_beh_models_fig <- bar_graph.se(ps_beh_betas$ps_beh_betas, er = ps_beh_se$ps_beh_se, xlab = 'Behavior', ylab = 'Standardized Coefficients for Portion Size', ymax = 0.6, ymin = -0.6, group = 0)
 

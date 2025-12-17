@@ -337,5 +337,10 @@ r01_micro <- r01_micro[r01_micro[['sub']] != 113, ]
 r01_micro_ps <- r01_micro_ps[r01_micro_ps[['sub']] != 82, ]
 r01_micro <- r01_micro[r01_micro[['sub']] != 82, ]
 
+# write out data
+r01_micro_ps['age_yr'] <- round(r01_micro_ps[['age_yr']], 1)
+r01_micro['age_yr'] <- round(r01_micro[['age_yr']], 1)
 
+write.csv(r01_micro_ps, 'data/micro_ps_compiled.csv', row.names = FALSE)
+write.csv(r01_micro, 'data/micro_compiled.csv', row.names = FALSE)
 

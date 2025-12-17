@@ -32,6 +32,10 @@
 
 # source('setup_data.R')
 
+#### set up ####
+r01_micro_ps <- read.csv('data/micro_ps_compiled.csv')
+r01_micro <- read.csv('data/micro_compiled.csv')
+
 ## demo table
 micro_demo_data <- r01_micro_ps[c(5:6, 8, 14:15, 9:13)]
 demo_tab <-
